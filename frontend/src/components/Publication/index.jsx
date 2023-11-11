@@ -1,0 +1,1 @@
+export const Publication = () => <div>ЭТО СТРАНИЦА КОНКРЕТНОЙ ПУБЛИКАЦИИ</div>
