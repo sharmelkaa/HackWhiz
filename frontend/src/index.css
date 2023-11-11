@@ -8,12 +8,12 @@ html, body {
 }
 
 body {
-  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,121,29,1) 35%, rgba(4,116,178,1) 76%, rgba(2,92,214,1) 88%, rgba(2,93,217,1) 89%, rgba(1,89,238,1) 95%, rgba(0,61,255,1) 100%);
+  background-image: url("components/Root/images/matrix.jpg");
+  background-attachment: fixed;
+  background-size: cover;
 }
 
 @font-face {
   font-family: 'Hacked';
-  src:
-          local('Hacked-KerX'),
-          url('./fonts/hacked-font/Hacked-KerX.ttf') format('truetype');
+  src: local('Hacked-KerX'), url('./fonts/hacked-font/Hacked-KerX.ttf') format('truetype');
 }

@@ -16,14 +16,18 @@ export const LinksContainer = styled.div`
 `
 
 export const Link = styled(NavLink)`
-  font-family: 'Handjet',sans-serif;
+  font-family: 'Handjet', sans-serif;
   text-decoration: none;
   font-size: 36px;
   color: aliceblue;
   text-shadow: 0 0 7px aliceblue, 0 0 3px aliceblue, 0 0 21px aliceblue;
   border: 1px solid white;
   border-radius: 10px;
-  padding: 5px 15px;
+  padding: 0 15px;
+
+  &:hover {
+    color: #cbe0e1;
+  }
 `
 
 export const Logo = styled.div`
