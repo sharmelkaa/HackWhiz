@@ -1,0 +1,1 @@
+export const WelcomePage = () => <div>ЭТО СТРАНИЦА-ПРИВЕТСТВИЕ</div>

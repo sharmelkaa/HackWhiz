@@ -1,0 +1,1 @@
+export const PublicationsList = () => <div>ЭТО СПИСОК ПУБЛИКАЦИЙ</div>

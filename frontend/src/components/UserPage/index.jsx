@@ -1,0 +1,1 @@
+export const UserPage = () => <div>ЭТО СТРАНИЦА ПОЛЬЗОВАТЕЛЯ</div>
