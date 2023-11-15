@@ -3,21 +3,25 @@ const roleModel = require('../models/roleModel')
 const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator')
 const jwt = require('jsonwebtoken')
-const { secret } = require('../config')
-const generateAccessToken = (id, roles) => {
+
+const generateAccessToken = (id, role) => {
     const payload = {
         id,
-        roles
+        role
     }
-
-    return jwt.sign(payload, secret, { expiresIn: 24 })
+    return jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: 24 })
 }
+
+const myValidationResult = validationResult.withDefaults({
+    formatter: error => error.msg,
+});
+
 class authController {
     async login(req, res) {
         try {
             const { username, password } = req.body
 
-            const errors = validationResult(req)
+            const errors = myValidationResult(req)
             if (!errors.isEmpty()) {
                 res.status(400).json({ message: errors.array() })
                 return
@@ -25,20 +29,18 @@ class authController {
 
             const user = await userModel.findOne({ username })
             if (!user) {
-                res.status(400).json( {message: "User with such username doesn't exist"})
+                res.status(400).json({ message: "User with such username doesn't exist" })
                 return
             }
 
             const validPassword = bcrypt.compareSync(password, user.password)
             if (!validPassword) {
-                res.status(400).json( {message: "Wrong password"})
+                res.status(400).json({ message: "Wrong password" })
                 return
             }
 
-            return res.status(200).json({ message: 'logged in' })
-
-            // const token = generateAccessToken(user._id, user.role)
-            // return res.json(token)
+            const token = generateAccessToken(user._id, user.role)
+            return res.status(200).json(token)
 
         } catch (e) {
             res.status(400).json({ message: e.message })

@@ -2,6 +2,7 @@ const { Router } = require('express')
 const authController = require('../controllers/authController')
 const { check } = require('express-validator')
 
+
 const authRouter = new Router()
 
 authRouter.post('/login', [

@@ -35,4 +35,5 @@ export const Logo = styled.div`
   font-size: 48px;
   color: #fff;
   text-shadow: 0 0 7px #fff, 0 0 3px #fff, 0 0 21px #fff;
+  cursor: pointer;
 `
