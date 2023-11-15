@@ -4,44 +4,48 @@ import {Field} from "../UI/Field";
 import {Button} from "../UI/Button";
 import {useState} from "react";
 import {useNavigate} from "react-router";
-
+import {useRequest} from "../../hooks/useRequest";
+import {Modal} from "../UI/Modal";
 
 const DEFAULT_VALUES = {username:'', password:''}
 export const LogIn = () => {
     const [formValues, setFormValues] = useState(DEFAULT_VALUES)
-    const disabledButton = !formValues.username || !formValues.password
+    const [modalMessage, setModalMessage] = useState(null)
+
+    const onCloseModal = () => {
+        setModalMessage(null)
+    }
+
     const navigate = useNavigate()
+    const loginRequest = useRequest()
+
+
+    const disabledButton = !formValues.username || !formValues.password
+
     const onSubmit = async (e) => {
         e.preventDefault()
-        console.log(formValues)
-        try {
-            const response =  await fetch(`http://localhost:3002/login`, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    ...formValues
-                })
-            })
-            if (response.status !== 200) {
-                const json = await response.json()
-                alert(json.message)
-            }
 
-            alert('YOU SIGNED IN!')
-            navigate(`/${formValues.username}`)
-        } catch (e) {
-            console.log(e)
+        const { status, message } = await loginRequest('login', 'POST', formValues)
+
+        if (status !== 200) {
+            setModalMessage(message)
+            return
         }
+
+        setModalMessage(`Welcome, ${formValues.username}!`)
+        setTimeout(() => {
+            navigate(`/${formValues.username}`)
+        }, 2000)
+
+        console.log('success')
     }
 
     const onChange = (name, value) => {
         setFormValues({...formValues, [name]: value})
     }
 
-    return(
+    return(<>
+        {modalMessage && <Modal text={modalMessage} onClose={onCloseModal} />}
         <SC.LogInWrapper>
             <Form>
                 <SC.Header>Log In</SC.Header>
@@ -67,5 +71,7 @@ export const LogIn = () => {
                     disabled={disabledButton}
                 />
             </Form>
-        </SC.LogInWrapper>)
+        </SC.LogInWrapper>
+    </>
+    )
 }
