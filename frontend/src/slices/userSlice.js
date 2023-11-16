@@ -1,5 +1,4 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {useRequest} from "../hooks/useRequest";
 import {fetchData} from "../api/fetchData";
 
 const initialState = {
@@ -12,14 +11,24 @@ export const loginUser = createAsyncThunk(
     'user/loginUser',
     async (userCredentials, thunkAPI) => {
         const response = await fetchData('login', 'POST', userCredentials)
-        localStorage.setItem('user', JSON.stringify(response))
-        return response
+        const data = await response.json()
+        const result = await data
+        if (!response.ok) {
+            return thunkAPI.rejectWithValue(result)
+        }
+        localStorage.setItem('user', JSON.stringify(data))
+        return data
     }
 )
 
 export const userSlice = createSlice({
     name: 'user',
     initialState,
+    reducers: {
+        logOut: (state) => {
+            state.user = null
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(loginUser.pending, (state) => {
@@ -35,12 +44,11 @@ export const userSlice = createSlice({
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false
                 state.user = null
-                console.log('we are here')
                 state.error = action.payload
             })
     }
 })
 
-export const {  } = userSlice.actions
+export const { logOut } = userSlice.actions
 
 export default userSlice.reducer
