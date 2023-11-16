@@ -1,18 +1,12 @@
 import styled from "styled-components";
 
-const textColors = {
-    normal: 'black',
-    warning: 'darkred',
-    success: '#2CFF2CFF'
-}
-
 export const ModalWrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.8);
   z-index: 1;
 `
 export const Modal = styled.div`
@@ -21,27 +15,30 @@ export const Modal = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  background: white;
   border: 1px solid white;
-  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6, 0 0 25px #0073e6, 0 0 30px #0073e6, 0 0 35px #0073e6;
+  background: white;
+  opacity: 0.8;
+  padding: 5px 20px 5px 15px;
   display: flex;
-  gap: 15px;
+  gap: 5px;
   flex-direction: column;
-  border-radius: 15px;
+  width: auto;
 `
+
 export const ModalText = styled.div`
   color: black;
   font-weight: bold;
   text-align: center;
-  font-size: 20px;
-  margin-right: 15px;
+  font-size: 28px;
 `
 
-export const CloseModal = styled.div`
+export const CloseIcon = styled.img`
+  cursor: pointer;
   position: absolute;
   top: 0;
-  right: 10px;
-  font-weight: bold;
-  cursor: pointer;
-  margin-left: 10px;
+  right: 0;
+  max-width: 10px;
+  width: 100%;
 `
