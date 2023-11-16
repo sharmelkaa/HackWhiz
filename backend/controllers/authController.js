@@ -40,7 +40,8 @@ class authController {
             }
 
             const token = generateAccessToken(user._id, user.role)
-            return res.status(200).json(token)
+
+            return res.status(200).json({ user, token: token })
 
         } catch (e) {
             res.status(400).json({ message: e.message })

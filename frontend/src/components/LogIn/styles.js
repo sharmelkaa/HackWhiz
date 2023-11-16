@@ -3,7 +3,6 @@ import styled from 'styled-components'
 export const Header = styled.div`
   display: flex;
   justify-content: center;
-  font-family: 'Handjet', sans-serif;
   font-size: 48px;
   font-weight: bold;
   color: #fff;

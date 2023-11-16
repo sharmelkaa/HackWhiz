@@ -16,7 +16,6 @@ export const LinksContainer = styled.div`
 `
 
 export const Link = styled(NavLink)`
-  font-family: 'Handjet', sans-serif;
   text-decoration: none;
   font-size: 36px;
   color: aliceblue;
@@ -31,7 +30,6 @@ export const Link = styled(NavLink)`
 `
 
 export const Logo = styled.div`
-  font-family: 'Hacked',serif;
   font-size: 48px;
   color: #fff;
   text-shadow: 0 0 7px #fff, 0 0 3px #fff, 0 0 21px #fff;

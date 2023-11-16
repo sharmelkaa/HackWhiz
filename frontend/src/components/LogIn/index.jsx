@@ -6,11 +6,14 @@ import {useState} from "react";
 import {useNavigate} from "react-router";
 import {useRequest} from "../../hooks/useRequest";
 import {Modal} from "../UI/Modal";
+import {useDispatch} from "react-redux";
+import {loginUser} from "../../slices/userSlice";
 
 const DEFAULT_VALUES = {username:'', password:''}
 export const LogIn = () => {
     const [formValues, setFormValues] = useState(DEFAULT_VALUES)
     const [modalMessage, setModalMessage] = useState(null)
+    const dispatch = useDispatch()
 
     const onCloseModal = () => {
         setModalMessage(null)
@@ -25,19 +28,22 @@ export const LogIn = () => {
     const onSubmit = async (e) => {
         e.preventDefault()
 
-        const { status, message } = await loginRequest('login', 'POST', formValues)
+        dispatch(loginUser(formValues))
 
-        if (status !== 200) {
-            setModalMessage(message)
-            return
-        }
 
-        setModalMessage(`Welcome, ${formValues.username}!`)
-        setTimeout(() => {
-            navigate(`/${formValues.username}`)
-        }, 2000)
+        // const { status, response } = await loginRequest('login', 'POST', formValues)
+        //
+        // if (status !== 200) {
+        //     setModalMessage(response.message)
+        //     return
+        // }
 
-        console.log('success')
+
+        // setModalMessage(`Welcome, ${formValues.username}!`)
+        // setTimeout(() => {
+        //     navigate(`/${formValues.username}`)
+        // }, 1500)
+
     }
 
     const onChange = (name, value) => {

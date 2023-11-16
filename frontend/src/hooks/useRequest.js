@@ -11,9 +11,10 @@ export const useRequest = () => {
                     ...body
                 })
             })
+
             const json = await response.json()
 
-            return { status: response.status, message: json.message }
+            return { status: response.status, response: json }
 
         } catch (e) {
             console.log(e)
