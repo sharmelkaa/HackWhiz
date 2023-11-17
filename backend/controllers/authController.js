@@ -1,5 +1,6 @@
 const userModel = require('../models/userModel')
 const roleModel = require('../models/roleModel')
+const tokenModel = require('../models/tokenModel')
 const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator')
 const jwt = require('jsonwebtoken')
@@ -9,7 +10,7 @@ const generateAccessToken = (id, role) => {
         id,
         role
     }
-    return jwt.sign(payload, process.env.TOKEN_SECRET, { expiresIn: 24 })
+    return jwt.sign(payload, process.env.TOKEN_SECRET)
 }
 
 const myValidationResult = validationResult.withDefaults({
@@ -39,10 +40,20 @@ class authController {
                 return
             }
 
-            const token = generateAccessToken(user._id, user.role)
+            const accessToken = generateAccessToken(user._id, user.role)
+            await tokenModel.create({ user: user._id, accessToken: accessToken })
 
-            return res.status(200).json({ user, token: token })
+            return res.status(200).json({ token: accessToken })
 
+        } catch (e) {
+            res.status(400).json({ message: e.message })
+        }
+    }
+
+    async logout(req, res) {
+        const { accessToken } = req.body
+        try {
+            await tokenModel.deleteOne({ accessToken })
         } catch (e) {
             res.status(400).json({ message: e.message })
         }
@@ -73,13 +84,12 @@ class authController {
 
             const hashPassword = bcrypt.hashSync(password, 5);
             const userRole = await roleModel.findOne({ value: 'USER' })
-            const newUser = new userModel({ username, email, password: hashPassword, role: userRole.value })
-            await newUser.save()
+            await userModel.create({ username, email, password: hashPassword, role: userRole.value })
 
             res.status(200).json({ message: 'User successfully signed up'})
 
         } catch (e) {
-            res.status(400).json({ message: 'Sign Up error' })
+            res.status(400).json({ message: e.message })
         }
     }
 
@@ -88,7 +98,7 @@ class authController {
             const users = await userModel.find()
             res.json(users)
         } catch (e) {
-            console.log(e)
+            res.status(400).json({ message: e.message })
         }
     }
 }

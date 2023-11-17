@@ -37,8 +37,8 @@ export const ModalText = styled.div`
 export const CloseIcon = styled.img`
   cursor: pointer;
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 5px;
+  right: 5px;
   max-width: 10px;
   width: 100%;
 `

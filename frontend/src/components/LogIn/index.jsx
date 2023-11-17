@@ -5,39 +5,43 @@ import {Button} from "../UI/Button";
 import {useState} from "react";
 import {useNavigate} from "react-router";
 import {Modal} from "../UI/Modal";
-import {useDispatch, useSelector} from "react-redux";
-import {loginUser} from "../../slices/userSlice";
+import {fetchData} from "../../api/fetchData";
 
 const DEFAULT_VALUES = {username:'', password:''}
 export const LogIn = () => {
     const [formValues, setFormValues] = useState(DEFAULT_VALUES)
     const [modalMessage, setModalMessage] = useState('')
     const navigate = useNavigate()
-    const dispatch = useDispatch()
-    const user  = useSelector((state) => state.user.user)
-    const error = useSelector((state) => state.user.error)
 
     const disabledButton = !formValues.username || !formValues.password
 
     const onCloseModal = () => {
-        setModalMessage(null)
+        setModalMessage('')
+    }
+
+    const onChange = (name, value) => {
+        setFormValues({...formValues, [name]: value})
     }
 
     const onSubmit = async (e) => {
         e.preventDefault()
 
-        dispatch(loginUser(formValues))
+        const response = await fetchData('login', 'POST', formValues)
+        const data = await response.json()
 
-        if (user) {
-            setModalMessage(`Welcome, ${user.user.username}!`)
-            setTimeout(() => {
-                navigate(`/${user.user.username}`)
-            }, 1500)
+        if (!response.ok) {
+            setModalMessage(data.message)
+            data.message === 'Wrong password' ? setFormValues({...formValues, password: ''}) : setFormValues(DEFAULT_VALUES)
+            return
         }
-    }
 
-    const onChange = (name, value) => {
-        setFormValues({...formValues, [name]: value})
+        localStorage.setItem('JWT', JSON.stringify(data))
+
+        setModalMessage(`Welcome, ${formValues.username}!`)
+
+        setTimeout(() => {
+            navigate(`/${formValues.username}`, { replace: true })
+            },1500)
     }
 
     return(
@@ -51,6 +55,7 @@ export const LogIn = () => {
                         type='text'
                         placeholder='put your username here...'
                         name='username'
+                        value={formValues.username}
                         onChange={(e) => onChange(e.target.name, e.target.value)}
                     />
 
@@ -59,6 +64,7 @@ export const LogIn = () => {
                         type='password'
                         placeholder='put your password here...'
                         name='password'
+                        value={formValues.password}
                         onChange={(e) => onChange(e.target.name, e.target.value)}
                     />
                     <Button
