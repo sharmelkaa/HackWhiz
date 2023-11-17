@@ -10,6 +10,8 @@ authRouter.post('/login', [
     check('password', "Password can't be empty").notEmpty(),
 ], authController.login)
 
+authRouter.post('/logout', authController.logout)
+
 authRouter.post('/signup',[
     check('username', "Username can't be empty").notEmpty(),
     check('email', "Email can't be empty").notEmpty(),

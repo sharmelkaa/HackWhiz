@@ -27,6 +27,9 @@ export const userSlice = createSlice({
     reducers: {
         logOut: (state) => {
             state.user = null
+        },
+        cleanError: (state) => {
+            state.error = null
         }
     },
     extraReducers: (builder) => {
@@ -49,6 +52,6 @@ export const userSlice = createSlice({
     }
 })
 
-export const { logOut } = userSlice.actions
+export const { logOut, cleanError } = userSlice.actions
 
 export default userSlice.reducer

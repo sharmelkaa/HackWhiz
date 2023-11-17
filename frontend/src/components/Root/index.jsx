@@ -1,17 +1,16 @@
-import { Outlet, NavLink } from 'react-router-dom'
+import {Outlet} from 'react-router-dom'
 import * as SC from './styles'
 import {useNavigate} from "react-router";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {Button} from "../UI/Button";
-import {logOut} from "../../slices/userSlice";
+
 export const Root = () => {
     const navigate = useNavigate()
-    const dispatch = useDispatch()
     const user = useSelector((state) => state.user.user)
 
     const onLogOut = () => {
-        localStorage.removeItem('user')
-        dispatch(logOut())
+        localStorage.removeItem('JWT')
+        navigate('/', { replace: true })
     }
 
     return(
