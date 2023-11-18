@@ -24,20 +24,17 @@ class authController {
 
             const errors = myValidationResult(req)
             if (!errors.isEmpty()) {
-                res.status(400).json({ message: errors.array() })
-                return
+                return res.status(400).json({ message: errors.array() })
             }
 
             const user = await userModel.findOne({ username })
             if (!user) {
-                res.status(400).json({ message: "User with such username doesn't exist" })
-                return
+                return res.status(400).json({ message: "User with such username doesn't exist" })
             }
 
             const validPassword = bcrypt.compareSync(password, user.password)
             if (!validPassword) {
-                res.status(400).json({ message: "Wrong password" })
-                return
+                return res.status(400).json({ message: "Wrong password" })
             }
 
             const accessToken = generateAccessToken(user._id, user.role)
@@ -51,9 +48,20 @@ class authController {
     }
 
     async logout(req, res) {
-        const { accessToken } = req.body
         try {
-            await tokenModel.deleteOne({ accessToken })
+            let accessToken = req.headers.authorization
+            if (!req.headers.authorization) {
+                return res.status(400).json({ message: 'Token is undefined' })
+            }
+
+            accessToken = accessToken.split(' ')[1]
+
+            const { deletedCount } = await tokenModel.deleteOne({ accessToken })
+            if (deletedCount === 0) {
+                return res.status(400).json({ message: 'Token Error' })
+            }
+
+            return res.status(200).json({ message: 'User logged out' })
         } catch (e) {
             res.status(400).json({ message: e.message })
         }
@@ -65,28 +73,25 @@ class authController {
 
             const errors = validationResult(req)
             if (!errors.isEmpty()) {
-                res.status(400).json({ message: errors.array() })
-                return
+                return res.status(400).json({ message: errors.array() })
             }
 
             const userAlreadyExistsWithThisUsername = await userModel.findOne({ username })
             const userAlreadyExistsWithThisEmail = await userModel.findOne({ email })
 
             if (userAlreadyExistsWithThisUsername) {
-                res.status(400).json({ message: 'User with such username already exists'})
-                return
+                return res.status(400).json({ message: 'User with such username already exists'})
             }
 
             if (userAlreadyExistsWithThisEmail) {
-                res.status(400).json({ message: 'User with such email already exists'})
-                return
+                return res.status(400).json({ message: 'User with such email already exists'})
             }
 
             const hashPassword = bcrypt.hashSync(password, 5);
             const userRole = await roleModel.findOne({ value: 'USER' })
             await userModel.create({ username, email, password: hashPassword, role: userRole.value })
 
-            res.status(200).json({ message: 'User successfully signed up'})
+             return res.status(200).json({ message: 'User successfully signed up'})
 
         } catch (e) {
             res.status(400).json({ message: e.message })
@@ -96,7 +101,7 @@ class authController {
     async getUsers(req, res) {
         try {
             const users = await userModel.find()
-            res.json(users)
+            return res.status(200).json(users)
         } catch (e) {
             res.status(400).json({ message: e.message })
         }

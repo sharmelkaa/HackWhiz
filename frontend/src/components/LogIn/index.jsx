@@ -6,12 +6,15 @@ import {useState} from "react";
 import {useNavigate} from "react-router";
 import {Modal} from "../UI/Modal";
 import {fetchData} from "../../api/fetchData";
+import {logIn} from "../../slices/userSlice";
+import {useDispatch} from "react-redux";
 
 const DEFAULT_VALUES = {username:'', password:''}
 export const LogIn = () => {
     const [formValues, setFormValues] = useState(DEFAULT_VALUES)
     const [modalMessage, setModalMessage] = useState('')
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const disabledButton = !formValues.username || !formValues.password
 
@@ -35,7 +38,8 @@ export const LogIn = () => {
             return
         }
 
-        localStorage.setItem('JWT', JSON.stringify(data))
+        localStorage.setItem('JWT', JSON.stringify(data.token))
+        dispatch(logIn())
 
         setModalMessage(`Welcome, ${formValues.username}!`)
 
