@@ -13,37 +13,36 @@ import { Root } from "./components/Root";
 import { LogIn } from "./components/LogIn";
 import { store } from './store/store'
 import { Provider } from 'react-redux'
-
-
+import {CheckAuth} from "./components/CheckAuth";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Root />,
+        element: <Root/>,
         children: [
             {
                 index: true,
-                element: <WelcomePage />
+                element: <WelcomePage/>
             },
             {
                 path: '/:username',
-                element: <UserPage />
+                element: <CheckAuth><UserPage/></CheckAuth>
             },
             {
                 path: '/:username/friends',
-                element: <FriendsList/>,
+                element: <CheckAuth><FriendsList/></CheckAuth>
             },
             {
                 path: '/:username/publications',
-                element: <PublicationsList />
+                element: <CheckAuth><PublicationsList/></CheckAuth>
             },
             {
                 path: '/:username/publications/:id',
-                element: <Publication />
+                element: <CheckAuth><Publication/></CheckAuth>
             },
             {
                 path: '/admin',
-                element: <AdminPage />
+                element: <CheckAuth><AdminPage/></CheckAuth>
             }
         ]
     },
