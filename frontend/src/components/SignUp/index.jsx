@@ -1,12 +1,13 @@
-import * as SC from "../LogIn/styles";
+import * as SC from "../SignUp/styles";
 import {Form} from "../UI/Form";
-import {Field} from "../UI/Field";
 import {Button} from "../UI/Button";
-import {useState} from "react";
 import { useForm } from "react-hook-form"
-import {TestInput} from "../UI/testInput";
+import {FormField} from "../UI/FormField";
+import {emailValidation, passwordValidation, usernameValidation} from "./helpers/validationRules";
 
-const DEFAULT_VALUES = {username:'', email: '', password:''}
+const USERNAME = 'username'
+const EMAIL = 'email'
+const PASSWORD = 'password'
 
 export const SignUp = () => {
     const {
@@ -21,105 +22,27 @@ export const SignUp = () => {
         reset()
     }
 
-    const validation = {
-        required: 'Username is required field',
-        minLength: {
-            value: 4,
-            message: 'Username must be at least 4 characters long'
-        }
-    }
-
     return(
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <input {...register('username', {
-                required: 'Username is required field',
-                minLength: {
-                    value: 4,
-                    message: 'Username must be at least 4 characters long'
-                }
-            })} />
-            {errors.username && <span>{errors.username.message}</span>}
+        <SC.SignUpWrapper>
+            <Form onSubmit={handleSubmit(onSubmit)}>
 
-            <TestInput label='USER' register={register} validation={validation}/>
-            {errors.USER && <span>{errors.USER.message}</span>}
+                <SC.FieldWrapper>
+                    <FormField label={USERNAME} register={register} validation={usernameValidation}/>
+                    {errors[USERNAME] && <SC.Error>{errors[USERNAME].message}</SC.Error>}
+                </SC.FieldWrapper>
 
+                <SC.FieldWrapper>
+                    <FormField label={EMAIL} register={register} validation={emailValidation}/>
+                    {errors[EMAIL] && <SC.Error>{errors[EMAIL].message}</SC.Error>}
+                </SC.FieldWrapper>
 
-            <input {...register('email', {
-                required: 'Email is required field',
-                pattern: {
-                    value: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                    message: 'Enter a valid email'
-                }
-            })} />
-            {errors.email && <span>{errors.email.message}</span>}
+                <SC.FieldWrapper>
+                    <FormField label={PASSWORD} register={register} validation={passwordValidation}/>
+                    {errors[PASSWORD] && <SC.Error>{errors[PASSWORD].message}</SC.Error>}
+                </SC.FieldWrapper>
 
-            <input {...register('password', {
-                required: 'Password is required field',
-                pattern: {
-                    value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/,
-                    message: 'Password must consist of 6-20 characters containing at least one digit, one upper and one lowercase letter'
-                }
-            })} />
-            {errors.password && <span>{errors.password.message}</span>}
-
-            <button>Join the team!</button>
-        </form>
+                <Button text={'Join the team!'}></Button>
+            </Form>
+        </SC.SignUpWrapper>
     )
-
-    // const [formValues, setFormValues] = useState(DEFAULT_VALUES)
-    //
-    // const disabledButton = !formValues.username || !formValues.email || !formValues.password
-    //
-    // const onChange = (name, value) => {
-    //     setFormValues({...formValues, [name]: value})
-    // }
-    //
-    // const onSubmit = (e) => {
-    //     e.preventDefault()
-    //
-    //     console.log('submit')
-    // }
-    //
-    // return(
-    //     <>
-    //         {/*{modalMessage && <Modal text={modalMessage} onClose={onCloseModal} />}*/}
-    //         <SC.LogInWrapper>
-    //             <Form>
-    //                 <SC.Header>Sign Up</SC.Header>
-    //                 <Field
-    //                     label='Username'
-    //                     type='text'
-    //                     placeholder='put your username here...'
-    //                     name='username'
-    //                     value={formValues.username}
-    //                     onChange={(e) => onChange(e.target.name, e.target.value)}
-    //                 />
-    //
-    //                 <Field
-    //                     label='Email'
-    //                     type='email'
-    //                     placeholder='put your email here...'
-    //                     name='email'
-    //                     value={formValues.email}
-    //                     onChange={(e) => onChange(e.target.name, e.target.value)}
-    //                 />
-    //
-    //                 <Field
-    //                     label='Password'
-    //                     type='password'
-    //                     placeholder='put your password here...'
-    //                     name='password'
-    //                     value={formValues.password}
-    //                     onChange={(e) => onChange(e.target.name, e.target.value)}
-    //                 />
-    //                 <Button
-    //                     type='submit'
-    //                     text="JOin the team!"
-    //                     onClick={onSubmit}
-    //                     disabled={disabledButton}
-    //                 />
-    //             </Form>
-    //         </SC.LogInWrapper>
-    //     </>
-    // )
 }
