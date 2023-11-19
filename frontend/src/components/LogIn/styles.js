@@ -10,6 +10,8 @@ export const Header = styled.div`
 `
 
 export const LogInWrapper = styled.div`
+  max-width: 300px;
+  width: 100%;
   position: absolute;
   top: 50%;
   left: 50%;

@@ -1,3 +1,3 @@
 import * as SC from './styles'
 
-export const Form = ({ children }) => <SC.FormWrapper>{children}</SC.FormWrapper>
+export const Form = ({ onSubmit, children }) => <SC.FormWrapper onSubmit={onSubmit}>{children}</SC.FormWrapper>
