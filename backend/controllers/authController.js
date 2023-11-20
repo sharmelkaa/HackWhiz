@@ -37,7 +37,7 @@ class authController {
                 return res.status(400).json({ message: "Wrong password" })
             }
 
-            const accessToken = generateAccessToken(user._id, user.role)
+            const accessToken = generateAccessToken(user._id, user.role, user.username)
             await tokenModel.create({ user: user._id, accessToken: accessToken })
 
             return res.status(200).json({ token: accessToken })

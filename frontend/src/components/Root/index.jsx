@@ -26,6 +26,7 @@ export const Root = () => {
 
         if (logoutResult.message === 'User logged out') {
             localStorage.removeItem('JWT')
+            localStorage.removeItem('username')
             dispatch(logOut())
             navigate('/', { replace: true })
             return
@@ -45,7 +46,7 @@ export const Root = () => {
                             <SC.Link to={'/signup'}>Sign Up</SC.Link>
                         </>
                     }
-                    {isLogged && <Button onClick={onLogOut} text='Log Out' />}
+                    {isLogged && <Button onClick={onLogOut}>Log Out</Button> }
                 </SC.LinksContainer>
             </SC.HeaderContainer>
             <Outlet />

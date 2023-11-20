@@ -1,10 +1,10 @@
 import * as SC from './styles'
 
-export const Button = ({ text, type, onClick, disabled }) =>
+export const Button = ({ children, type, onClick, disabled }) =>
     <SC.Button
         onClick={onClick}
         type={type}
         disabled={disabled}
     >
-        {text}
+        {children}
     </SC.Button>
