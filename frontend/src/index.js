@@ -13,7 +13,7 @@ import { Root } from "./components/Root";
 import { LogIn } from "./components/LogIn";
 import { store } from './store/store'
 import { Provider } from 'react-redux'
-import {CheckAuth} from "./components/CheckAuth";
+import {CheckAuth} from "./components/HOC/CheckAuth";
 
 const router = createBrowserRouter([
     {

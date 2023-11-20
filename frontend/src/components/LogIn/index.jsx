@@ -1,84 +1,82 @@
 import * as SC from './styles'
 import {Form} from "../UI/Form";
-import {Field} from "../UI/Field";
 import {Button} from "../UI/Button";
-import {useState} from "react";
-import {useNavigate} from "react-router";
+import {useEffect, useLayoutEffect, useState} from "react";
+import {Navigate, useNavigate} from "react-router";
 import {Modal} from "../UI/Modal";
 import {fetchData} from "../../api/fetchData";
 import {logIn} from "../../slices/userSlice";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {useForm} from "react-hook-form";
+import {FormField} from "../UI/FormField";
+import {passwordValidation, usernameValidation} from "../SignUp/helpers/validationRules";
 
-const DEFAULT_VALUES = {username:'', password:''}
+const USERNAME = 'username'
+const PASSWORD = 'password'
+
 export const LogIn = () => {
-    const [formValues, setFormValues] = useState(DEFAULT_VALUES)
-    const [modalMessage, setModalMessage] = useState('')
+    const { register, handleSubmit, formState: { errors }, resetField, reset } = useForm({ mode: "onChange" })
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const [modalMessage, setModalMessage] = useState('')
+    const [loggedUser, setLoggedUser] = useState('')
 
-    const disabledButton = !formValues.username || !formValues.password
+    useLayoutEffect(() => {
+        const user = JSON.parse(localStorage.getItem('JWT'))
+        if (user) {
+            setLoggedUser(user)
+        }
+    }, [])
 
     const onCloseModal = () => {
         setModalMessage('')
     }
 
-    const onChange = (name, value) => {
-        setFormValues({...formValues, [name]: value})
-    }
-
-    const onSubmit = async (e) => {
-        e.preventDefault()
-
-        const response = await fetchData('login', 'POST', formValues)
+    const onSubmit = async (userCredentials) => {
+        const response = await fetchData('login', 'POST', userCredentials)
         const data = await response.json()
 
         if (!response.ok) {
             setModalMessage(data.message)
-            data.message === 'Wrong password' ? setFormValues({...formValues, password: ''}) : setFormValues(DEFAULT_VALUES)
+            data.message === 'Wrong password' ? resetField(PASSWORD) : reset()
             return
         }
 
         localStorage.setItem('JWT', JSON.stringify(data.token))
+        localStorage.setItem('username', JSON.stringify(userCredentials.username))
+
         dispatch(logIn())
 
-        setModalMessage(`Welcome, ${formValues.username}!`)
-
-        setTimeout(() => {
-            navigate(`/${formValues.username}`, { replace: true })
-            },1500)
+        navigate(`/${userCredentials.username}`, { replace: true })
     }
 
     return(
         <>
-            {modalMessage && <Modal text={modalMessage} onClose={onCloseModal} />}
-            <SC.LogInWrapper>
-                <Form>
-                    <SC.Header>Log In</SC.Header>
-                    <Field
-                        label='Username'
-                        type='text'
-                        placeholder='put your username here...'
-                        name='username'
-                        value={formValues.username}
-                        onChange={(e) => onChange(e.target.name, e.target.value)}
-                    />
+            {loggedUser &&
+                <SC.LoggedInWrapper>
+                    <SC.Warning>You are already logged in...</SC.Warning>
+                    <SC.PageLink to={`/${loggedUser}`}>Go to my page --></SC.PageLink>
+                </SC.LoggedInWrapper>}
 
-                    <Field
-                        label='Password'
-                        type='password'
-                        placeholder='put your password here...'
-                        name='password'
-                        value={formValues.password}
-                        onChange={(e) => onChange(e.target.name, e.target.value)}
-                    />
-                    <Button
-                        type='submit'
-                        text="Let me in!"
-                        onClick={onSubmit}
-                        disabled={disabledButton}
-                    />
+            {modalMessage && <Modal text={modalMessage} onClose={onCloseModal} />}
+
+            {!loggedUser && <SC.LogInWrapper>
+                <Form onSubmit={handleSubmit(onSubmit)}>
+                    <SC.Header>Log In</SC.Header>
+
+                    <SC.FieldWrapper>
+                        <FormField label={USERNAME} register={register} validation={{required: usernameValidation.required}} />
+                        {errors[USERNAME] && <SC.Error>{errors[USERNAME].message}</SC.Error>}
+                    </SC.FieldWrapper>
+
+                    <SC.FieldWrapper>
+                        <FormField label={PASSWORD} type={PASSWORD} register={register} validation={{required: passwordValidation.required}} />
+                        {errors[PASSWORD] && <SC.Error>{errors[PASSWORD].message}</SC.Error>}
+                    </SC.FieldWrapper>
+
+                    <Button>Let me in!</Button>
                 </Form>
-            </SC.LogInWrapper>
+            </SC.LogInWrapper>}
         </>
     )
 }
