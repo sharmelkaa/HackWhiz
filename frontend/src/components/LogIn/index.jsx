@@ -1,15 +1,17 @@
 import * as SC from './styles'
 import {Form} from "../UI/Form";
 import {Button} from "../UI/Button";
-import {useEffect, useLayoutEffect, useState} from "react";
-import {Navigate, useNavigate} from "react-router";
+import {useLayoutEffect, useState} from "react";
+import {useNavigate} from "react-router";
 import {Modal} from "../UI/Modal";
 import {fetchData} from "../../api/fetchData";
 import {logIn} from "../../slices/userSlice";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {useForm} from "react-hook-form";
 import {FormField} from "../UI/FormField";
 import {passwordValidation, usernameValidation} from "../SignUp/helpers/validationRules";
+import closed_eye from "./images/eye-closed-svgrepo-com.svg";
+import opened_eye from "./images/eye-svgrepo-com.svg";
 
 const USERNAME = 'username'
 const PASSWORD = 'password'
@@ -20,6 +22,7 @@ export const LogIn = () => {
     const dispatch = useDispatch()
     const [modalMessage, setModalMessage] = useState('')
     const [loggedUser, setLoggedUser] = useState('')
+    const [showPassword, setShowPassword] = useState(false)
 
     useLayoutEffect(() => {
         const user = JSON.parse(localStorage.getItem('JWT'))
@@ -70,7 +73,13 @@ export const LogIn = () => {
                     </SC.FieldWrapper>
 
                     <SC.FieldWrapper>
-                        <FormField label={PASSWORD} type={PASSWORD} register={register} validation={{required: passwordValidation.required}} />
+                        <FormField
+                            label={PASSWORD}
+                            type={showPassword ? 'text' : PASSWORD}
+                            register={register}
+                            validation={{required: passwordValidation.required}}
+                            children={<SC.Img src={showPassword ? closed_eye : opened_eye} onClick={() => setShowPassword(prevState => !prevState)} />}
+                        />
                         {errors[PASSWORD] && <SC.Error>{errors[PASSWORD].message}</SC.Error>}
                     </SC.FieldWrapper>
 

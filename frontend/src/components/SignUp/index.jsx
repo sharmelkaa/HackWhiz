@@ -8,6 +8,8 @@ import {fetchData} from "../../api/fetchData";
 import {useState} from "react";
 import {Modal} from "../UI/Modal";
 import {useNavigate} from "react-router";
+import closed_eye from './images/eye-closed-svgrepo-com.svg'
+import opened_eye from './images/eye-svgrepo-com.svg'
 
 const USERNAME = 'username'
 const EMAIL = 'email'
@@ -16,6 +18,7 @@ const PASSWORD = 'password'
 export const SignUp = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({ mode: "onChange" })
     const [modalMessage, setModalMessage] = useState('')
+    const [showPassword, setShowPassword] = useState(false)
     const navigate = useNavigate()
 
     const onCloseModal = () => {
@@ -59,7 +62,13 @@ export const SignUp = () => {
                     </SC.FieldWrapper>
 
                     <SC.FieldWrapper>
-                        <FormField label={PASSWORD} type={PASSWORD} register={register} validation={passwordValidation}/>
+                        <FormField
+                            label={PASSWORD}
+                            type={showPassword ? 'text' : PASSWORD}
+                            register={register}
+                            validation={passwordValidation}
+                            children={<SC.Img src={showPassword ? closed_eye : opened_eye} onClick={() => setShowPassword(prevState => !prevState)}/>}
+                        />
                         {errors[PASSWORD] && <SC.Error>{errors[PASSWORD].message}</SC.Error>}
                     </SC.FieldWrapper>
 

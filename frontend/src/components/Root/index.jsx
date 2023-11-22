@@ -1,14 +1,14 @@
 import {Outlet} from 'react-router-dom'
 import * as SC from './styles'
-import {useNavigate} from "react-router";
 import {Button} from "../UI/Button";
 import {logOut} from "../../slices/userSlice";
 import {useDispatch, useSelector} from "react-redux";
 
 export const Root = () => {
-    const navigate = useNavigate()
     const dispatch  = useDispatch()
     const { isLogged } = useSelector((state) => state.user)
+
+    console.log('ROOT')
 
     const onLogOut = async () => {
         const token = JSON.parse(localStorage.getItem('JWT'))
@@ -28,7 +28,6 @@ export const Root = () => {
             localStorage.removeItem('JWT')
             localStorage.removeItem('username')
             dispatch(logOut())
-            navigate('/', { replace: true })
             return
         }
 
@@ -38,7 +37,7 @@ export const Root = () => {
     return(
         <>
             <SC.HeaderContainer>
-                <SC.Logo onClick={() => {navigate('/')}}>HACKWHIZ</SC.Logo>
+                <SC.Logo>HACKWHIZ</SC.Logo>
                 <SC.LinksContainer>
                     {!isLogged &&
                         <>
