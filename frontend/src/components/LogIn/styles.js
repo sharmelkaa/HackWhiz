@@ -59,3 +59,12 @@ export const LoggedInWrapper = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
 `
+
+export const Img = styled.img`
+  max-width: 23px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  transform: translate(-30%, -30%);
+  cursor: pointer;
+`

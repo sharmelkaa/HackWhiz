@@ -1,6 +1,5 @@
 import * as SC from './styles'
-export const WelcomePage = () => {
-    return(
+export const WelcomePage = () =>
         <SC.WelcomeContainer>
             <SC.TagLogo>{'</>'}</SC.TagLogo>
             <SC.TextContainer>
@@ -8,5 +7,3 @@ export const WelcomePage = () => {
                 <SC.Slogan>CONNECT. COLLABORATE. CODE.</SC.Slogan>
             </SC.TextContainer>
         </SC.WelcomeContainer>
-    )
-}
