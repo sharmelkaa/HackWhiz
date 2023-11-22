@@ -98,10 +98,22 @@ class authController {
         }
     }
 
-    async getUsers(req, res) {
+    async getUserData(req, res) {
+        const username = req.query.username
+
+        if (!username) {
+            return res.status(400).json({ message: 'Username is required' })
+        }
+
         try {
-            const users = await userModel.find()
-            return res.status(200).json(users)
+            const userData = await userModel.findOne({ username })
+
+            if (!userData) {
+                return res.status(400).json({ message: 'User is not found' })
+            }
+
+            return res.status(200).json(userData)
+
         } catch (e) {
             res.status(400).json({ message: e.message })
         }

@@ -28,6 +28,6 @@ authRouter.post('/signup',[
         .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/).withMessage('Password must consist of 6-20 characters containing at least one digit, one upper and one lowercase letter')
 ], authController.signup)
 
-authRouter.get('/getusers', authController.getUsers)
+authRouter.get('/user', authController.getUserData)
 
 module.exports = authRouter

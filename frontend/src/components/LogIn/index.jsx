@@ -25,7 +25,7 @@ export const LogIn = () => {
     const [showPassword, setShowPassword] = useState(false)
 
     useLayoutEffect(() => {
-        const user = JSON.parse(localStorage.getItem('JWT'))
+        const user = JSON.parse(localStorage.getItem('username'))
         if (user) {
             setLoggedUser(user)
         }
