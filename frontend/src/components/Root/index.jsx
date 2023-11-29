@@ -3,15 +3,17 @@ import * as SC from './styles'
 import {Button} from "../UI/Button";
 import {logOut} from "../../slices/userSlice";
 import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router";
+import {useLocalStorage} from "../../hooks/useLocalStorage";
 
 export const Root = () => {
     const dispatch  = useDispatch()
+    const navigate = useNavigate()
     const { isLogged } = useSelector((state) => state.user)
-
-    console.log('ROOT')
+    const { getLocalStorage, removeLocalStorage } = useLocalStorage()
 
     const onLogOut = async () => {
-        const token = JSON.parse(localStorage.getItem('JWT'))
+        const token = getLocalStorage('JWT')
 
         const logoutResult = await fetch(`http://localhost:3002/api/logout`, {
             method: 'POST',
@@ -25,8 +27,8 @@ export const Root = () => {
             .then((data) => data)
 
         if (logoutResult.message === 'User logged out') {
-            localStorage.removeItem('JWT')
-            localStorage.removeItem('username')
+            removeLocalStorage('JWT')
+            removeLocalStorage('username')
             dispatch(logOut())
             return
         }
@@ -34,10 +36,13 @@ export const Root = () => {
         console.log('What happened?', logoutResult.message)
     }
 
+    const username = getLocalStorage('username')
+
     return(
         <>
             <SC.HeaderContainer>
-                <SC.Logo>HACKWHIZ</SC.Logo>
+                {!isLogged && <SC.Logo>made by Sharmelka</SC.Logo>}
+                {isLogged && <SC.Greeting onClick={() => navigate(`/${username}`)}>{`Welcome, ${username}!`}</SC.Greeting>}
                 <SC.LinksContainer>
                     {!isLogged &&
                         <>
@@ -48,6 +53,7 @@ export const Root = () => {
                     {isLogged && <Button onClick={onLogOut}>Log Out</Button> }
                 </SC.LinksContainer>
             </SC.HeaderContainer>
+
             <Outlet />
         </>
     )

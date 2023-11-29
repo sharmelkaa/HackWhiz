@@ -12,6 +12,7 @@ import {FormField} from "../UI/FormField";
 import {passwordValidation, usernameValidation} from "../SignUp/helpers/validationRules";
 import closed_eye from "./images/eye-closed-svgrepo-com.svg";
 import opened_eye from "./images/eye-svgrepo-com.svg";
+import {useLocalStorage} from "../../hooks/useLocalStorage";
 
 const USERNAME = 'username'
 const PASSWORD = 'password'
@@ -23,9 +24,10 @@ export const LogIn = () => {
     const [modalMessage, setModalMessage] = useState('')
     const [loggedUser, setLoggedUser] = useState('')
     const [showPassword, setShowPassword] = useState(false)
+    const { setLocalStorage, getLocalStorage } = useLocalStorage()
 
     useLayoutEffect(() => {
-        const user = JSON.parse(localStorage.getItem('username'))
+        const user = getLocalStorage('username')
         if (user) {
             setLoggedUser(user)
         }
@@ -45,8 +47,8 @@ export const LogIn = () => {
             return
         }
 
-        localStorage.setItem('JWT', JSON.stringify(data.token))
-        localStorage.setItem('username', JSON.stringify(userCredentials.username))
+        setLocalStorage('JWT', data.token)
+        setLocalStorage('username', userCredentials.username)
 
         dispatch(logIn())
 

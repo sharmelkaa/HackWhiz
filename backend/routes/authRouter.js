@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const authController = require('../controllers/authController')
 const { check } = require('express-validator')
+const authMiddleware = require('../middlewares/authMiddleware')
 
 
 const authRouter = new Router()
@@ -12,7 +13,7 @@ authRouter.post('/login', [
         .notEmpty().withMessage('Password can\'t be empty')
 ], authController.login)
 
-authRouter.post('/logout', authController.logout)
+authRouter.post('/logout', authMiddleware, authController.logout)
 
 authRouter.post('/signup',[
     check('username')
@@ -27,7 +28,5 @@ authRouter.post('/signup',[
         .notEmpty().withMessage('Password is required field')
         .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/).withMessage('Password must consist of 6-20 characters containing at least one digit, one upper and one lowercase letter')
 ], authController.signup)
-
-authRouter.get('/user', authController.getUserData)
 
 module.exports = authRouter

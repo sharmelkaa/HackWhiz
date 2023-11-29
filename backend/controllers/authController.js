@@ -49,14 +49,9 @@ class authController {
 
     async logout(req, res) {
         try {
-            let accessToken = req.headers.authorization
-            if (!req.headers.authorization) {
-                return res.status(400).json({ message: 'Token is undefined' })
-            }
+            const user = req.user.id
 
-            accessToken = accessToken.split(' ')[1]
-
-            const { deletedCount } = await tokenModel.deleteOne({ accessToken })
+            const { deletedCount } = await tokenModel.deleteOne({ user })
             if (deletedCount === 0) {
                 return res.status(400).json({ message: 'Token Error' })
             }
@@ -92,27 +87,6 @@ class authController {
             await userModel.create({ username, email, password: hashPassword, role: userRole.value })
 
              return res.status(200).json({ message: 'User successfully signed up'})
-
-        } catch (e) {
-            res.status(400).json({ message: e.message })
-        }
-    }
-
-    async getUserData(req, res) {
-        const username = req.query.username
-
-        if (!username) {
-            return res.status(400).json({ message: 'Username is required' })
-        }
-
-        try {
-            const userData = await userModel.findOne({ username })
-
-            if (!userData) {
-                return res.status(400).json({ message: 'User is not found' })
-            }
-
-            return res.status(200).json(userData)
 
         } catch (e) {
             res.status(400).json({ message: e.message })
