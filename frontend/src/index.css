@@ -1,6 +1,7 @@
 * {
   box-sizing: border-box;
   font-family: 'Handjet', sans-serif;
+  color: white;
 }
 
 html, body {
@@ -9,7 +10,7 @@ html, body {
 }
 
 body {
-  background-image: url("components/Root/images/matrix.jpg");
+  background-image: url("images/matrix.jpg");
   background-attachment: fixed;
   background-size: cover;
 }

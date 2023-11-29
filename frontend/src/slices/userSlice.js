@@ -1,8 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit'
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
+
+const isLogged = localStorage.getItem('JWT') !== null
 
 const initialState = {
-    isLogged: localStorage.getItem('JWT') !== null
+    isLogged: isLogged,
+    // currentUser: isLogged ? fetchUserData() : null
 }
+
+// const fetchUserData = createAsyncThunk(
+//     'users/fetchUserData',
+//     async (userId: number, thunkAPI) => {
+//         const response = await userAPI.fetchById(userId)
+//         return response.data
+//     }
+// )
 
 
 export const userSlice = createSlice({
@@ -16,6 +27,7 @@ export const userSlice = createSlice({
             state.isLogged = false
         }
     },
+
 })
 
 export const { logIn, logOut } = userSlice.actions
