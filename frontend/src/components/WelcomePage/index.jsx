@@ -1,14 +1,12 @@
 import * as SC from './styles'
 import {useSelector} from "react-redux";
 import {Navigate} from "react-router";
-import {useLocalStorage} from "../../hooks/useLocalStorage";
+import {manageLocalStorage} from "../../helpers/manageLocalStorage";
 export const WelcomePage = () => {
-    const { isLogged } = useSelector((state) => state.user)
-    const { getLocalStorage } = useLocalStorage()
-    const username = getLocalStorage('username')
+    const { isLogged, currentUser } = useSelector((state) => state.user)
 
     if (isLogged) {
-        return <Navigate to={`/${username}`} />
+        return <Navigate to={`/${currentUser.username}`} />
     }
 
     return(

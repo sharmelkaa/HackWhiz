@@ -4,16 +4,16 @@ import {Button} from "../UI/Button";
 import {logOut} from "../../slices/userSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router";
-import {useLocalStorage} from "../../hooks/useLocalStorage";
+import {getJWT, removeLocalStorage} from "../../helpers/manageLocalStorage";
+
 
 export const Root = () => {
     const dispatch  = useDispatch()
     const navigate = useNavigate()
-    const { isLogged } = useSelector((state) => state.user)
-    const { getLocalStorage, removeLocalStorage } = useLocalStorage()
+    const { isLogged, currentUser } = useSelector((state) => state.user)
 
     const onLogOut = async () => {
-        const token = getLocalStorage('JWT')
+        const token = getJWT()
 
         const logoutResult = await fetch(`http://localhost:3002/api/logout`, {
             method: 'POST',
@@ -28,7 +28,6 @@ export const Root = () => {
 
         if (logoutResult.message === 'User logged out') {
             removeLocalStorage('JWT')
-            removeLocalStorage('username')
             dispatch(logOut())
             return
         }
@@ -36,13 +35,11 @@ export const Root = () => {
         console.log('What happened?', logoutResult.message)
     }
 
-    const username = getLocalStorage('username')
-
     return(
         <>
             <SC.HeaderContainer>
                 {!isLogged && <SC.Logo>made by Sharmelka</SC.Logo>}
-                {isLogged && <SC.Greeting onClick={() => navigate(`/${username}`)}>{`Welcome, ${username}!`}</SC.Greeting>}
+                {isLogged && <SC.Greeting onClick={() => navigate(`/${currentUser.username}`)}>{`Welcome, ${currentUser.username}!`}</SC.Greeting>}
                 <SC.LinksContainer>
                     {!isLogged &&
                         <>

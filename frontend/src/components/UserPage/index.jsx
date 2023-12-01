@@ -2,13 +2,12 @@ import * as SC from './styles'
 import {useEffect, useState} from "react";
 import no_image from './8742495.png'
 import {useParams} from "react-router";
-import {useLocalStorage} from "../../hooks/useLocalStorage";
+import {getJWT} from "../../helpers/manageLocalStorage";
 
 export const UserPage = () => {
     const { username } = useParams()
     const [error, setError] = useState('')
     const [data, setData] = useState('')
-    const { getLocalStorage } = useLocalStorage()
 
     const [file, setFile] = useState()
 
@@ -19,7 +18,7 @@ export const UserPage = () => {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${getLocalStorage('JWT')}`
+                'Authorization': `Bearer ${getJWT()}`
             }
         })
             .then((response) => {
@@ -40,7 +39,7 @@ export const UserPage = () => {
         fetch(`http://localhost:3002/api/upload_avatar`, {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${getLocalStorage('JWT')}`
+                'Authorization': `Bearer ${ggetJWT()}`
             },
             body: formData
         })
@@ -57,7 +56,7 @@ export const UserPage = () => {
         fetch(`http://localhost:3002/api/delete_avatar`, {
             method: 'DELETE',
             headers: {
-                'Authorization': `Bearer ${getLocalStorage('JWT')}`
+                'Authorization': `Bearer ${getJWT()}`
             }
         })
             .then((response) => {

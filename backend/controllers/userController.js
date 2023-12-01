@@ -9,20 +9,31 @@ class userController {
                 return res.status(400).json({ message: 'Username is required' })
             }
 
-            const user = await userModel.findOne({ username })
+            const user = await userModel.findOne({ username }).select('-password -email -role -__v -_id -friends -posts')
             if (!user) {
                 return res.status(400).json({ message: 'User is not found' })
             }
 
-            const authorizedUserID = req.user.id
-            const authorizedUser = await userModel.findOne({ _id: authorizedUserID }).select('-role -__v -_id -friends -posts')
+            // const authorizedUserID = req.user.id
+            // const authorizedUser = await userModel.findOne({ _id: authorizedUserID }).select('-role -__v -_id -friends -posts')
+            //
+            // if (user._id.equals(authorizedUserID)) {
+            //     return res.status(200).json(authorizedUser)
+            // }
 
-            if (user._id.equals(authorizedUserID)) {
-                return res.status(200).json(authorizedUser)
-            }
+            return res.status(200).json(user)
 
-            const publicUserData = await userModel.findOne({ username }).select('-password -email -role -__v -_id -friends -posts')
-            return res.status(200).json(publicUserData)
+        } catch (e) {
+            res.status(400).json({ message: e.message })
+        }
+    }
+    
+    async getPersonalData(req, res) {
+        try {
+            const _id = req.user.id
+            const user = await userModel.findOne({ _id }).select('-role -__v -password -_id -friends -posts')
+
+            return res.status(200).json(user)
 
         } catch (e) {
             res.status(400).json({ message: e.message })

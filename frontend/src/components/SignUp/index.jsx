@@ -11,7 +11,6 @@ import {useNavigate} from "react-router";
 import closed_eye from './images/eye-closed-svgrepo-com.svg'
 import opened_eye from './images/eye-svgrepo-com.svg'
 import {useSelector} from "react-redux";
-import {useLocalStorage} from "../../hooks/useLocalStorage";
 
 const USERNAME = 'username'
 const EMAIL = 'email'
@@ -22,15 +21,13 @@ export const SignUp = () => {
     const [modalMessage, setModalMessage] = useState('')
     const [showPassword, setShowPassword] = useState(false)
     const navigate = useNavigate()
-    const { isLogged } = useSelector((state) => state.user)
-    const { getLocalStorage } = useLocalStorage()
-    const username = getLocalStorage('username')
+    const { isLogged, currentUser } = useSelector((state) => state.user)
 
     if (isLogged) {
         return(
             <SC.LoggedInWrapper>
                 <SC.Warning>You have to log out before signing up...</SC.Warning>
-                <SC.PageLink to={`/${username}`}>Go to my page --></SC.PageLink>
+                <SC.PageLink to={`/${currentUser.username}`}>Go to my page --></SC.PageLink>
             </SC.LoggedInWrapper>
         )
     }
