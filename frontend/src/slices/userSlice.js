@@ -1,33 +1,29 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
+import {createSlice} from '@reduxjs/toolkit'
+import {getData} from "../api/getData";
+import {getJWT} from "../helpers/manageLocalStorage";
 
-const isLogged = localStorage.getItem('JWT') !== null
+const JWT = getJWT()
+
+const isLogged = JWT !== null
+const currentUser = isLogged ? await getData('personal_data') : null
 
 const initialState = {
-    isLogged: isLogged,
-    // currentUser: isLogged ? fetchUserData() : null
+    isLogged,
+    currentUser
 }
-
-// const fetchUserData = createAsyncThunk(
-//     'users/fetchUserData',
-//     async (userId: number, thunkAPI) => {
-//         const response = await userAPI.fetchById(userId)
-//         return response.data
-//     }
-// )
-
-
 export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        logIn: (state) => {
+        logIn: (state, action) => {
             state.isLogged = true
+            state.currentUser = action.payload
         },
         logOut: (state) => {
             state.isLogged = false
+            state.currentUser = null
         }
     },
-
 })
 
 export const { logIn, logOut } = userSlice.actions

@@ -20,7 +20,9 @@ const upload = multer({ storage: storage })
 
 const userRouter = new Router()
 
-userRouter.get('/userdata', authMiddleware, userController.getUserData)
+userRouter.get('/personal_data', authMiddleware, userController.getPersonalData)
+
+userRouter.get('/user', authMiddleware, userController.getUserData)
 
 userRouter.post('/upload_avatar', [
     authMiddleware,

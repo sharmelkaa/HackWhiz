@@ -40,7 +40,7 @@ class authController {
             const accessToken = generateAccessToken(user._id, user.role, user.username)
             await tokenModel.create({ user: user._id, accessToken: accessToken })
 
-            return res.status(200).json({ token: accessToken })
+            return res.status(200).json({ token: accessToken, user })
 
         } catch (e) {
             res.status(400).json({ message: e.message })
