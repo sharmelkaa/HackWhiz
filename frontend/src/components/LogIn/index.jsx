@@ -4,7 +4,6 @@ import {Button} from "../UI/Button";
 import {useState} from "react";
 import {Navigate} from "react-router";
 import {Modal} from "../UI/Modal";
-import {fetchData} from "../../api/fetchData";
 import {logIn} from "../../slices/userSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {useForm} from "react-hook-form";
@@ -13,6 +12,7 @@ import {passwordValidation, usernameValidation} from "../SignUp/helpers/validati
 import closed_eye from "./images/eye-closed-svgrepo-com.svg";
 import opened_eye from "./images/eye-svgrepo-com.svg";
 import {setLocalStorage} from "../../helpers/manageLocalStorage";
+import {postData} from "../../api/postData";
 
 const USERNAME = 'username'
 const PASSWORD = 'password'
@@ -30,26 +30,21 @@ export const LogIn = () => {
     }
 
     const onSubmit = async (userCredentials) => {
-        const response = await fetchData('login', 'POST', userCredentials)
-        const data = await response.json()
+        const response = await postData('login', userCredentials)
 
-        if (!response.ok) {
-            setModalMessage(data.message)
-            data.message === 'Wrong password' ? resetField(PASSWORD) : reset()
+        if (response.hasOwnProperty('message')) {
+            setModalMessage(response.message)
+            response.message === 'Wrong password' ? resetField(PASSWORD) : reset()
             return
         }
 
-        setLocalStorage('JWT', data.token)
-        dispatch(logIn(data.user))
+        setLocalStorage('JWT', response.token)
+        dispatch(logIn(response.user))
     }
 
     return(
         <>
             {currentUser && <Navigate to={`/${currentUser.username}`} />}
-                {/*<SC.LoggedInWrapper>*/}
-                {/*    <SC.Warning>You are already logged in...</SC.Warning>*/}
-                {/*    <SC.PageLink to={`/${currentUser.username}`}>Go to my page --></SC.PageLink>*/}
-                {/*</SC.LoggedInWrapper>}*/}
 
             {modalMessage && <Modal text={modalMessage} onClose={onCloseModal} />}
 
