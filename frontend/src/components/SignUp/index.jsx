@@ -4,13 +4,13 @@ import {Button} from "../UI/Button";
 import { useForm } from "react-hook-form"
 import {FormField} from "../UI/FormField";
 import {emailValidation, passwordValidation, usernameValidation} from "./helpers/validationRules";
-import {fetchData} from "../../api/fetchData";
 import {useState} from "react";
 import {Modal} from "../UI/Modal";
 import {useNavigate} from "react-router";
 import closed_eye from './images/eye-closed-svgrepo-com.svg'
 import opened_eye from './images/eye-svgrepo-com.svg'
 import {useSelector} from "react-redux";
+import {postData} from "../../api/postData";
 
 const USERNAME = 'username'
 const EMAIL = 'email'
@@ -37,21 +37,17 @@ export const SignUp = () => {
     }
 
     const onSubmit = async (userCredentials) => {
+        const response = await postData('signup', userCredentials)
 
-        const response = await fetchData('signup', 'POST', userCredentials)
-        const data = await response.json()
+        setModalMessage(response.message)
 
-        if (!response.ok) {
-            setModalMessage(data.message)
+        if (response.message !== 'User successfully signed up') {
             return
         }
-
-        setModalMessage(data.message)
 
         setTimeout(() => {
             navigate(`/login`)
         }, 1000)
-        reset()
     }
 
     return(

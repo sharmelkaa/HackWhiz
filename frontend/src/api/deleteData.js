@@ -1,15 +1,15 @@
 import {getJWT} from "../helpers/manageLocalStorage";
 
-export const getData = async (url) => {
+export const deleteData = async (url, body={}) => {
     try {
         const response = await fetch(`http://localhost:3002/api/${url}`, {
-            method: 'GET',
+            method: 'DELETE',
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${getJWT()}`
-            }
+            },
+            body: JSON.stringify(body)
         })
+
         return await response.json();
 
     } catch (error) {

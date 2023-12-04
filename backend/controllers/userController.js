@@ -1,5 +1,7 @@
 const userModel = require("../models/userModel");
 const fs = require('fs')
+const path = require('path')
+const MAIN_PATH = require('../main_path')
 
 class userController {
     async getUserData(req, res) {
@@ -13,13 +15,6 @@ class userController {
             if (!user) {
                 return res.status(400).json({ message: 'User is not found' })
             }
-
-            // const authorizedUserID = req.user.id
-            // const authorizedUser = await userModel.findOne({ _id: authorizedUserID }).select('-role -__v -_id -friends -posts')
-            //
-            // if (user._id.equals(authorizedUserID)) {
-            //     return res.status(200).json(authorizedUser)
-            // }
 
             return res.status(200).json(user)
 
@@ -45,12 +40,13 @@ class userController {
             if (!req.file) {
                 return res.status(400).json({ message: 'File error'})
             }
+
             const avatar = req.file.filename
 
             const userID = req.user.id
-            const user = await userModel.findByIdAndUpdate(userID, { avatar })
+            const user = await userModel.findByIdAndUpdate(userID, { avatar }, {new: true})
 
-            return res.status(200).json({ message: 'Avatar uploaded successfully' })
+            return res.status(200).json({ user })
         } catch (e) {
             res.status(400).json({ message: e.message })
         }
@@ -60,12 +56,13 @@ class userController {
         try {
             const user = await userModel.findById(req.user.id)
 
-            fs.unlinkSync(`C:\\Users\\dudin\\WebstormProjects\\HackWhiz\\backend\\images\\${user.avatar}`)
+            const avatar_path = path.join(MAIN_PATH, 'images', user.avatar)
+            fs.unlinkSync(avatar_path)
 
             user.avatar = null
             await user.save()
 
-            return res.status(200).json({ message: 'Avatar deleted successfully' })
+            return res.status(200).json({ user })
 
         } catch (e) {
             res.status(400).json({ message: e.message })

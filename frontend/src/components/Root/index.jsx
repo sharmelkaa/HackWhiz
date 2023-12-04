@@ -4,7 +4,8 @@ import {Button} from "../UI/Button";
 import {logOut} from "../../slices/userSlice";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router";
-import {getJWT, removeLocalStorage} from "../../helpers/manageLocalStorage";
+import {removeLocalStorage} from "../../helpers/manageLocalStorage";
+import {postData} from "../../api/postData";
 
 
 export const Root = () => {
@@ -13,26 +14,15 @@ export const Root = () => {
     const { isLogged, currentUser } = useSelector((state) => state.user)
 
     const onLogOut = async () => {
-        const token = getJWT()
+        const response = await postData('logout')
 
-        const logoutResult = await fetch(`http://localhost:3002/api/logout`, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        })
-            .then((response) => response.json())
-            .then((data) => data)
-
-        if (logoutResult.message === 'User logged out') {
+        if (response.message === 'User logged out') {
             removeLocalStorage('JWT')
             dispatch(logOut())
             return
         }
 
-        console.log('What happened?', logoutResult.message)
+        console.log('What happened? -->', response.message)
     }
 
     return(
