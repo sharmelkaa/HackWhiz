@@ -3,6 +3,10 @@ export const usernameValidation = {
     minLength: {
         value: 4,
         message: 'Username must be at least 4 characters long'
+    },
+    pattern: {
+        value: /^(?!admin\s*$).+/,
+        message: 'You can"t use "admin" as username'
     }
 }
 

@@ -53,7 +53,11 @@ export const LogIn = () => {
                     <SC.Header>Log In</SC.Header>
 
                     <SC.FieldWrapper>
-                        <FormField label={USERNAME} register={register} validation={{required: usernameValidation.required}} />
+                        <FormField
+                            label={USERNAME}
+                            register={register}
+                            validation={{required: usernameValidation.required}}
+                        />
                         {errors[USERNAME] && <SC.Error>{errors[USERNAME].message}</SC.Error>}
                     </SC.FieldWrapper>
 
