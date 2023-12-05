@@ -14,6 +14,7 @@ import { LogIn } from "./components/LogIn";
 import { store } from './store/store'
 import { Provider } from 'react-redux'
 import {CheckAuth} from "./components/HOC/CheckAuth";
+import {NewPublication} from "./components/NewPublication";
 
 const router = createBrowserRouter([
     {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
             {
                 path: '/admin',
                 element: <CheckAuth><AdminPage/></CheckAuth>
+            },
+            {
+                path: '/new_publication',
+                element: <CheckAuth><NewPublication/></CheckAuth>
             }
         ]
     },

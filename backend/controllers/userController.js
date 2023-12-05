@@ -44,7 +44,7 @@ class userController {
             const avatar = req.file.filename
 
             const userID = req.user.id
-            const user = await userModel.findByIdAndUpdate(userID, { avatar }, {new: true})
+            const user = await userModel.findByIdAndUpdate(userID, { avatar }, { new: true }).select('-role -__v -password -_id -friends -posts')
 
             return res.status(200).json({ user })
         } catch (e) {
@@ -54,15 +54,16 @@ class userController {
 
     async deleteAvatar(req, res) {
         try {
-            const user = await userModel.findById(req.user.id)
+            const userID = req.user.id
+            const userBeforeUpdate = await userModel.findById(userID)
 
-            const avatar_path = path.join(MAIN_PATH, 'images', user.avatar)
+            const avatar_path = path.join(MAIN_PATH, 'images', userBeforeUpdate.avatar)
             fs.unlinkSync(avatar_path)
 
-            user.avatar = null
-            await user.save()
+            const avatar = null
+            const userAfterUpdate = await userModel.findByIdAndUpdate(userID, { avatar }, { new: true }).select('-role -__v -password -_id -friends -posts')
 
-            return res.status(200).json({ user })
+            return res.status(200).json({ userAfterUpdate })
 
         } catch (e) {
             res.status(400).json({ message: e.message })
