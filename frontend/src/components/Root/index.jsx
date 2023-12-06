@@ -11,8 +11,7 @@ import {postData} from "../../api/postData";
 export const Root = () => {
     const dispatch  = useDispatch()
     const navigate = useNavigate()
-    const { isLogged, currentUser } = useSelector((state) => state.user)
-
+    const { isLogged, currentUser, isAdmin } = useSelector((state) => state.user)
     const onLogOut = async () => {
         const response = await postData('logout')
 
@@ -29,7 +28,7 @@ export const Root = () => {
         <>
             <SC.HeaderContainer>
                 {!isLogged && <SC.Logo>made by Sharmelka</SC.Logo>}
-                {isLogged && <SC.Greeting onClick={() => navigate(`/${currentUser.username}`)}>{`Welcome, ${currentUser.username}!`}</SC.Greeting>}
+                {isLogged && <SC.Greeting onClick={() => navigate(`/${currentUser.username}`)}>{`Welcome, ${isAdmin ? 'Creator' : currentUser.username}!`}</SC.Greeting>}
                 <SC.LinksContainer>
                     {!isLogged &&
                         <>

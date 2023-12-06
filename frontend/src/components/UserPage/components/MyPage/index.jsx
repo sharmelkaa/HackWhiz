@@ -2,7 +2,7 @@ import * as SC from '../../styles'
 import {useSelector} from "react-redux";
 import {useState} from "react";
 import {Modal} from "../../../UI/Modal";
-import {Avatar} from "./components/Avatar";
+import {Avatar} from "../components/Avatar";
 
 export const MyPage = () =>  {
     const { currentUser } = useSelector((state) => state.user)

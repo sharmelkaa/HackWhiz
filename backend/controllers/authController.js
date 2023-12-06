@@ -1,10 +1,12 @@
 const userModel = require('../models/userModel')
 const roleModel = require('../models/roleModel')
 const tokenModel = require('../models/tokenModel')
+const allUsersModel = require('../models/allUsersModel')
 const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator')
 const jwt = require('jsonwebtoken')
 
+const ALL_USERS_ID = '657045f873b78fc8371a217e'
 const generateAccessToken = (id, role) => {
     const payload = {
         id,
@@ -27,7 +29,7 @@ class authController {
                 return res.status(400).json({ message: errors.array() })
             }
 
-            const user = await userModel.findOne({ username })
+            let user = await userModel.findOne({ username })
             if (!user) {
                 return res.status(400).json({ message: "User with such username doesn't exist" })
             }
@@ -39,6 +41,8 @@ class authController {
 
             const accessToken = generateAccessToken(user._id, user.role, user.username)
             await tokenModel.create({ user: user._id, accessToken: accessToken })
+
+            user = await userModel.findOne({ username }).select('-role -__v -password -_id -friends -posts')
 
             return res.status(200).json({ token: accessToken, user })
 
@@ -84,9 +88,11 @@ class authController {
 
             const hashPassword = bcrypt.hashSync(password, 5);
             const userRole = await roleModel.findOne({ value: 'USER' })
-            await userModel.create({ username, email, password: hashPassword, role: userRole.value })
 
-             return res.status(200).json({ message: 'User successfully signed up'})
+            const newUser = await userModel.create({ username, email, password: hashPassword, role: userRole.value })
+            await allUsersModel.updateOne({ _id: ALL_USERS_ID }, { $push: { users: newUser._id } })
+
+            return res.status(200).json({ message: 'User successfully signed up'})
 
         } catch (e) {
             res.status(400).json({ message: e.message })

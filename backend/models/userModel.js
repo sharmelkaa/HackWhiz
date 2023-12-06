@@ -4,49 +4,39 @@ const userSchema = new Schema({
     username: {
         type: String,
         unique: true,
-        required: true,
-        private: false
+        required: true
     },
     email: {
         type: String,
         unique: true,
-        required: true,
-        private: true
+        required: true
     },
     password: {
         type: String,
-        required: true,
-        private: true
+        required: true
     },
     role: {
         type: String,
-        ref: 'Role',
-        private: true
+        ref: 'Role'
     },
     avatar: {
-        type: String,
-        private: false
+        type: String
     },
     age: {
-        type: Number,
-        private: false
+        type: Number
     },
     country: {
-        type: String,
-        private: false
+        type: String
     },
     online: {
-        type: Boolean,
-        private: false
+        type: Boolean
     },
     posts: {
         type: [Schema.Types.ObjectId],
-        ref: 'Post',
-        private: false
+        ref: 'Post'
     },
     friends: {
-        type: [String],
-        private: false
+        type: [String] // usernames
     }
 })
 
