@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const ProfilePicture = styled.img`
   max-width: 300px;
+  width: 100%;
   max-height: 300px;
 `
 
@@ -9,7 +10,7 @@ export const AvatarContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 15px;
-  max-width: 400px;
+  max-width: 300px;
 `
 
 export const Label = styled.label`

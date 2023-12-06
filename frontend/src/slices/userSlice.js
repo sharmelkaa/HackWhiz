@@ -6,6 +6,7 @@ const JWT = getJWT()
 
 const isLogged = JWT !== null
 let currentUser = null
+let isAdmin = null
 let error = null
 
 if (isLogged) {
@@ -14,11 +15,13 @@ if (isLogged) {
         error = response.message
     }
     currentUser = response
+    isAdmin = currentUser.username === 'admin'
 }
 
 const initialState = {
     isLogged,
     currentUser,
+    isAdmin,
     error
 }
 

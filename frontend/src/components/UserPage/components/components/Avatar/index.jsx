@@ -1,16 +1,16 @@
 import * as SC from './styles'
-import no_image from "../../../../images/no_image.png";
+import no_image from "../../../images/no_image.png";
 import {useDispatch, useSelector} from "react-redux";
-import {getJWT} from "../../../../../../helpers/manageLocalStorage";
-import {setUser} from "../../../../../../slices/userSlice";
+import {getJWT} from "../../../../../helpers/manageLocalStorage";
+import {setUser} from "../../../../../slices/userSlice";
 import {useState} from "react";
-import {Modal} from "../../../../../UI/Modal";
-import {deleteData} from "../../../../../../api/deleteData";
+import {Modal} from "../../../../UI/Modal";
+import {deleteData} from "../../../../../api/deleteData";
 
 const AVATAR = 'avatar'
 const API_URL = 'http://localhost:3002/'
 
-export const Avatar = () => {
+export const Avatar = ({ editRights=true }) => {
     const { currentUser } = useSelector((state) => state.user)
     const { avatar } = currentUser
     const dispatch = useDispatch()
@@ -26,7 +26,6 @@ export const Avatar = () => {
             setModalMessage(response.message)
             return
         }
-
         dispatch(setUser(response.userAfterUpdate))
     }
     const editAvatar = async (e) => {
@@ -66,10 +65,10 @@ export const Avatar = () => {
                     onChange={e => editAvatar(e)}
             />
 
-            <SC.ManageAvatar>
+            {editRights && <SC.ManageAvatar>
                 <SC.Label htmlFor={AVATAR}>Edit</SC.Label>
                 {avatar && <SC.Delete onClick={deleteAvatar}>Delete</SC.Delete>}
-            </SC.ManageAvatar>
+            </SC.ManageAvatar>}
         </SC.AvatarContainer>
     )
 }
