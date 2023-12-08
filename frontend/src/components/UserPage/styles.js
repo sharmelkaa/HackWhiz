@@ -48,3 +48,14 @@ export const FriendsLink= styled(NavLink)`
 `
 export const PostsLink = styled(FriendsLink)``
 export const NewPostLink = styled(FriendsLink)``
+
+export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+`
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`

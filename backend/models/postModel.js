@@ -12,6 +12,9 @@ const postModel = new Schema({
     body: {
         type: String
     },
+    private: {
+        type: Boolean
+    },
     comments: {
         type: [Schema.Types.ObjectId],
         ref: 'Comment'

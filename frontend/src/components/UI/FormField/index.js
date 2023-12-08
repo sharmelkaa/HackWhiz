@@ -1,7 +1,7 @@
 import * as SC from "../FormField/styles";
 import {ucFirst} from "./helpers/ucFirst";
 
-export const FormField = ({ label, type, register, validation, input_id, children }) =>
+export const FormField = ({ label, type, register, validation, children }) =>
     <SC.FieldWrapper>
         <SC.Label>{ucFirst(label)}</SC.Label>
         <SC.Input

@@ -5,6 +5,8 @@ export const deleteData = async (url, body={}) => {
         const response = await fetch(`http://localhost:3002/api/${url}`, {
             method: 'DELETE',
             headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${getJWT()}`
             },
             body: JSON.stringify(body)

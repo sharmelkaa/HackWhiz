@@ -11,6 +11,10 @@ import closed_eye from './images/eye-closed-svgrepo-com.svg'
 import opened_eye from './images/eye-svgrepo-com.svg'
 import {useSelector} from "react-redux";
 import {postData} from "../../api/postData";
+import {FormFieldWrapper} from "../UI/FormFieldWrapper";
+import {Error} from "../UI/Error";
+import {FormWrapper} from "../UI/FormWrapper";
+import {FormHeader} from "../UI/FormHeader";
 
 const USERNAME = 'username'
 const EMAIL = 'email'
@@ -53,21 +57,21 @@ export const SignUp = () => {
     return(
         <>
             {modalMessage && <Modal text={modalMessage} onClose={onCloseModal} />}
-            <SC.SignUpWrapper>
+            <FormWrapper>
                 <Form onSubmit={handleSubmit(onSubmit)}>
-                    <SC.Header>Sign Up</SC.Header>
+                    <FormHeader>Sign Up</FormHeader>
 
-                    <SC.FieldWrapper>
+                    <FormFieldWrapper>
                         <FormField label={USERNAME} register={register} validation={usernameValidation}/>
-                        {errors[USERNAME] && <SC.Error>{errors[USERNAME].message}</SC.Error>}
-                    </SC.FieldWrapper>
+                        {errors[USERNAME] && <Error>{errors[USERNAME].message}</Error>}
+                    </FormFieldWrapper>
 
-                    <SC.FieldWrapper>
+                    <FormFieldWrapper>
                         <FormField label={EMAIL} register={register} validation={emailValidation}/>
-                        {errors[EMAIL] && <SC.Error>{errors[EMAIL].message}</SC.Error>}
-                    </SC.FieldWrapper>
+                        {errors[EMAIL] && <Error>{errors[EMAIL].message}</Error>}
+                    </FormFieldWrapper>
 
-                    <SC.FieldWrapper>
+                    <FormFieldWrapper>
                         <FormField
                             label={PASSWORD}
                             type={showPassword ? 'text' : PASSWORD}
@@ -75,12 +79,12 @@ export const SignUp = () => {
                             validation={passwordValidation}
                             children={<SC.Img src={showPassword ? closed_eye : opened_eye} onClick={() => setShowPassword(prevState => !prevState)}/>}
                         />
-                        {errors[PASSWORD] && <SC.Error>{errors[PASSWORD].message}</SC.Error>}
-                    </SC.FieldWrapper>
+                        {errors[PASSWORD] && <Error>{errors[PASSWORD].message}</Error>}
+                    </FormFieldWrapper>
 
                     <Button>Join the team!</Button>
                 </Form>
-            </SC.SignUpWrapper>
+            </FormWrapper>
         </>
     )
 }

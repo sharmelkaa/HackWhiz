@@ -11,7 +11,7 @@ class userController {
                 return res.status(400).json({ message: 'Username is required' })
             }
 
-            const user = await userModel.findOne({ username }).select('-password -email -role -__v -_id -friends -posts')
+            const user = await userModel.findOne({ username }).select('-friends -posts')
             if (!user) {
                 return res.status(400).json({ message: 'User is not found' })
             }
@@ -26,7 +26,7 @@ class userController {
     async getPersonalData(req, res) {
         try {
             const _id = req.user.id
-            const user = await userModel.findOne({ _id }).select('-role -__v -password -_id -friends -posts')
+            const user = await userModel.findOne({ _id }).populate('friends').exec()
 
             return res.status(200).json(user)
 
@@ -44,7 +44,7 @@ class userController {
             const avatar = req.file.filename
 
             const userID = req.user.id
-            const user = await userModel.findByIdAndUpdate(userID, { avatar }, { new: true }).select('-role -__v -password -_id -friends -posts')
+            const user = await userModel.findByIdAndUpdate(userID, { avatar }, { new: true }).populate('friends').exec()
 
             return res.status(200).json({ user })
         } catch (e) {
@@ -61,7 +61,7 @@ class userController {
             fs.unlinkSync(avatar_path)
 
             const avatar = null
-            const userAfterUpdate = await userModel.findByIdAndUpdate(userID, { avatar }, { new: true }).select('-role -__v -password -_id -friends -posts')
+            const userAfterUpdate = await userModel.findByIdAndUpdate(userID, { avatar }, { new: true }).populate('friends').exec()
 
             return res.status(200).json({ userAfterUpdate })
 
@@ -69,6 +69,63 @@ class userController {
             res.status(400).json({ message: e.message })
         }
     }
+
+    async addFriend(req, res) {
+        try {
+            const _id = req.user.id
+            const friend_name = req.body.username
+
+            const friendID = await userModel.findOne({ username: friend_name }, _id)
+            if (!friendID) {
+                return res.status(400).json({ message: 'Such user doesn\'t exists' })
+            }
+
+            const user = await userModel.findByIdAndUpdate({ _id }, { $push: { friends: friendID } }, { new: true }).populate('friends').exec()
+            return res.status(200).json({ user })
+
+        } catch (e) {
+            res.status(400).json({ message: e.message })
+        }
+    }
+
+    async deleteFriend(req, res) {
+        try {
+            const _id = req.user.id
+            const friend_name = req.body.username
+            console.log(friend_name)
+
+            const friendID = await userModel.findOne({ username: friend_name }, _id)
+            if (!friendID) {
+                return res.status(400).json({ message: 'Such user doesn\'t exists' })
+            }
+
+            const user = await userModel.findByIdAndUpdate({ _id }, { $pull: { friends: friendID } }, { new: true }).populate('friends').exec()
+            return res.status(200).json({ user })
+
+        } catch (e) {
+            res.status(400).json({ message: e.message })
+        }
+    }
+
+    async getFriends(req, res) {
+        try {
+            const username = req.query.username
+
+            if (!username) {
+                return res.status(400).json({ message: 'Username is required' })
+            }
+
+            const friends = await userModel.findOne({ username }, 'friends').populate('friends').exec()
+            if (!friends) {
+                return res.status(400).json({ message: 'Such user doesn\'t exists' })
+            }
+            
+            return res.status(200).json({ friends })
+        } catch (e) {
+            res.status(400).json({ message: e.message })
+        }
+    }
+
 }
 
 module.exports = new userController()
