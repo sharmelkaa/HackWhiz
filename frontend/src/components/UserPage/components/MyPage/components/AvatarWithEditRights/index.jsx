@@ -1,16 +1,17 @@
 import * as SC from './styles'
-import no_image from "../../../images/no_image.png";
+import no_image from "../../../../images/no_image.png";
 import {useDispatch, useSelector} from "react-redux";
-import {getJWT} from "../../../../../helpers/manageLocalStorage";
-import {setUser} from "../../../../../slices/userSlice";
+import {getJWT} from "../../../../../../helpers/manageLocalStorage";
+import {setUser} from "../../../../../../slices/userSlice";
 import {useState} from "react";
-import {Modal} from "../../../../UI/Modal";
-import {deleteData} from "../../../../../api/deleteData";
+import {Modal} from "../../../../../UI/Modal";
+import {deleteData} from "../../../../../../api/deleteData";
+import {Avatar} from "../../../../../UI/Avatar";
 
 const AVATAR = 'avatar'
 const API_URL = 'http://localhost:3002/'
 
-export const Avatar = ({ editRights=true }) => {
+export const AvatarWithEditRights = () => {
     const { currentUser } = useSelector((state) => state.user)
     const { avatar } = currentUser
     const dispatch = useDispatch()
@@ -56,7 +57,7 @@ export const Avatar = ({ editRights=true }) => {
         <SC.AvatarContainer>
             {modalMessage && <Modal text={modalMessage} onClose={onCloseModal} />}
 
-            <SC.ProfilePicture src={avatar ? API_URL+avatar : no_image} />
+            <Avatar image={avatar ? API_URL+avatar : no_image} />
 
             <SC.FileInput
                     id={AVATAR}
@@ -64,11 +65,10 @@ export const Avatar = ({ editRights=true }) => {
                     accept='image/*'
                     onChange={e => editAvatar(e)}
             />
-
-            {editRights && <SC.ManageAvatar>
+            <SC.ManageAvatar>
                 <SC.Label htmlFor={AVATAR}>Edit</SC.Label>
                 {avatar && <SC.Delete onClick={deleteAvatar}>Delete</SC.Delete>}
-            </SC.ManageAvatar>}
+            </SC.ManageAvatar>
         </SC.AvatarContainer>
     )
 }

@@ -15,7 +15,6 @@ const storage = multer.diskStorage({
         cb(null, newFilename)
     }
 })
-
 const upload = multer({ storage: storage })
 
 const userRouter = new Router()
@@ -30,5 +29,11 @@ userRouter.post('/upload_avatar', [
 ], userController.uploadAvatar)
 
 userRouter.delete('/delete_avatar', authMiddleware, userController.deleteAvatar)
+
+userRouter.post('/add_friend', authMiddleware, userController.addFriend)
+
+userRouter.delete('/delete_friend', authMiddleware, userController.deleteFriend)
+
+userRouter.get('/friends', authMiddleware, userController.getFriends)
 
 module.exports = userRouter

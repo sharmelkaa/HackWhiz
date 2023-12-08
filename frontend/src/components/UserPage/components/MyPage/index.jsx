@@ -2,7 +2,8 @@ import * as SC from '../../styles'
 import {useSelector} from "react-redux";
 import {useState} from "react";
 import {Modal} from "../../../UI/Modal";
-import {Avatar} from "../components/Avatar";
+import {AvatarOld, AvatarWithEditRights} from "./components/AvatarWithEditRights";
+import {AvatarWrapper} from "../../../UI/Avatar/styles";
 
 export const MyPage = () =>  {
     const { currentUser } = useSelector((state) => state.user)
@@ -17,12 +18,13 @@ export const MyPage = () =>  {
             {modalMessage && <Modal text={modalMessage} onClose={onCloseModal} />}
             <SC.Container>
 
-                <Avatar />
+                <AvatarWithEditRights />
 
                 <SC.MainInfo>
-                    {
-                        Object.keys(currentUser).map((key, index) => <div key={index}>{key}: {currentUser[key]}</div>)
-                    }
+                    {currentUser.username}
+                    {/*{*/}
+                    {/*    Object.keys(currentUser).map((key, index) => <div key={index}>{key}: {currentUser[key]}</div>)*/}
+                    {/*}*/}
                 </SC.MainInfo>
 
                 <SC.LinksWrapper>

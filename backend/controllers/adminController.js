@@ -5,7 +5,7 @@ class adminController {
     async getUsersList(req, res) {
         try {
             if (req.user.role !== 'ADMIN') {
-                res.status(400).json({ message: 'You don\'t have administrative rights' })
+                return res.status(400).json({ message: 'You don\'t have administrative rights' })
             }
 
             const users_list = await allUsersModel.findById({ _id: ALL_USERS_ID}).populate('users').exec()

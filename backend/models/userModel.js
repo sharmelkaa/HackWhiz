@@ -36,7 +36,8 @@ const userSchema = new Schema({
         ref: 'Post'
     },
     friends: {
-        type: [String] // usernames
+        type: [Schema.Types.ObjectId],
+        ref: 'User'
     }
 })
 

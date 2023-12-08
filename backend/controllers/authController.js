@@ -42,7 +42,7 @@ class authController {
             const accessToken = generateAccessToken(user._id, user.role, user.username)
             await tokenModel.create({ user: user._id, accessToken: accessToken })
 
-            user = await userModel.findOne({ username }).select('-role -__v -password -_id -friends -posts')
+            user = await userModel.findOne({ username }).populate('friends').exec()
 
             return res.status(200).json({ token: accessToken, user })
 

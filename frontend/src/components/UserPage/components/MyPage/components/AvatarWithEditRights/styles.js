@@ -1,11 +1,9 @@
 import styled from "styled-components";
-
 export const ProfilePicture = styled.img`
-  max-width: 300px;
+  max-width: 250px;
   width: 100%;
-  max-height: 300px;
+  max-height: 250px;
 `
-
 export const AvatarContainer = styled.div`
   display: flex;
   flex-direction: column;
