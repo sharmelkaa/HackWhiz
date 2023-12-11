@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import {NavLink} from "react-router-dom";
-
 export const Container = styled.div`
   max-width: 1024px;
   width: 100%;
