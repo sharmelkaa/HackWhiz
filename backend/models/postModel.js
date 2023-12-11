@@ -10,16 +10,16 @@ const postModel = new Schema({
         required: true
     },
     body: {
-        type: String
+        type: String,
+        required: true
     },
-    private: {
+    forAll: {
         type: Boolean
     },
     comments: {
         type: [Schema.Types.ObjectId],
         ref: 'Comment'
     },
-    timestamps: true
-})
+}, { timestamps: true })
 
 module.exports = model('Post', postModel);

@@ -1,11 +1,11 @@
 import * as SC from './styles'
 
-export const UsersList = ({ usernames }) => {
+export const List = ({ usernames }) => {
     return(
-        <SC.UsersListContainer>
+        <SC.ListContainer>
             {
                 usernames.map((username, index) => <SC.UserLink to={`/${username}`} key={index}>{username}</SC.UserLink>)
             }
-        </SC.UsersListContainer>
+        </SC.ListContainer>
     )
 }

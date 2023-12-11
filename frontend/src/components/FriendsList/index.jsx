@@ -1,9 +1,5 @@
 import {useSelector} from "react-redux";
 import {useParams} from "react-router";
-import {UsersList} from "../UI/List";
-import {useEffect, useState} from "react";
-import {getData} from "../../api/getData";
-import {Modal} from "../UI/Modal";
 import {MyFriends} from "./components/MyFriends";
 import {OtherUserFriends} from "./components/OtherUserFriends";
 

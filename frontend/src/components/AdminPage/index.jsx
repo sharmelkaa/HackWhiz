@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {getData} from "../../api/getData";
 import {Modal} from "../UI/Modal";
-import {UsersList} from "../UI/List";
+import {List} from "../UI/List";
 import * as SC from './styles'
 import {useSelector} from "react-redux";
 import {Navigate} from "react-router";
@@ -45,7 +45,7 @@ export const AdminPage = () => {
                         <SC.HeaderContent>All Users</SC.HeaderContent>
                         <SC.HeaderContent>↓</SC.HeaderContent>
                     </SC.Header>
-                    <UsersList usernames={users}/>
+                    <List usernames={users}/>
                 </>
             }
         </>

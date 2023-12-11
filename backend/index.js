@@ -5,6 +5,7 @@ const cors = require('cors')
 const authRouter = require('./routes/authRouter')
 const userRouter = require('./routes/userRouter')
 const adminRouter = require('./routes/adminRouter')
+const publicationRouter = require('./routes/publicationRouter')
 
 const app = express()
 app.use(cors())
@@ -13,6 +14,7 @@ app.use(express.static('images'));
 app.use('/api', authRouter)
 app.use('/api', userRouter)
 app.use('/api', adminRouter)
+app.use('/api', publicationRouter)
 
 const PORT = process.env.PORT || 3001
 
