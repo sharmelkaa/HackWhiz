@@ -10,7 +10,7 @@ import {Button} from "../UI/Button";
 import {postData} from "../../api/postData";
 import {useState} from "react";
 import {Modal} from "../UI/Modal";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setUser} from "../../slices/userSlice";
 
 const TITLE = 'title'
@@ -19,6 +19,7 @@ export const NewPublication = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({ mode: "onChange" })
     const [modalMessage, setModalMessage] = useState('')
     const dispatch = useDispatch()
+
     const onCloseModal = () => {
         setModalMessage('')
     }
@@ -56,6 +57,19 @@ export const NewPublication = () => {
                         </SC.TextareaWrapper>
                         {errors[BODY] && <Error>{errors[BODY].message}</Error>}
                     </FormFieldWrapper>
+
+                    <SC.CheckboxWrapper>
+                        <SC.Checkbox
+                            type='checkbox'
+                            id='private'
+                            {...register('friendsOnly')}
+                        />
+                        <SC.CheckboxLabel
+                            htmlFor='private'
+                        >
+                            Friends Only
+                        </SC.CheckboxLabel>
+                    </SC.CheckboxWrapper>
 
                     <Button>Post</Button>
                 </Form>

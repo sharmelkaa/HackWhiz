@@ -25,12 +25,13 @@ class userController {
     async getPersonalData(req, res) {
         try {
             const _id = req.user.id
-            console.log(_id)
             const user = await userModel.findOne({ _id })
-                .populate('friends')
+                .populate({
+                    path: 'friends',
+                    select: 'username'
+                })
                 .populate('posts')
                 .exec()
-            console.log(user)
             return res.status(200).json(user)
         } catch (e) {
             res.status(400).json({ message: e.message })
@@ -45,7 +46,10 @@ class userController {
             const avatar = req.file.filename
             const userID = req.user.id
             const user = await userModel.findByIdAndUpdate(userID, { avatar }, { new: true })
-                .populate('friends')
+                .populate({
+                    path: 'friends',
+                    select: 'username'
+                })
                 .populate('posts')
                 .exec()
             return res.status(200).json({ user })
@@ -64,7 +68,10 @@ class userController {
 
             const avatar = null
             const userAfterUpdate = await userModel.findByIdAndUpdate(userID, { avatar }, { new: true })
-                .populate('friends')
+                .populate({
+                    path: 'friends',
+                    select: 'username'
+                })
                 .populate('posts')
                 .exec()
 
@@ -86,7 +93,10 @@ class userController {
             }
 
             const user = await userModel.findByIdAndUpdate({ _id }, { $push: { friends: friendID } }, { new: true })
-                .populate('friends')
+                .populate({
+                    path: 'friends',
+                    select: 'username'
+                })
                 .populate('posts')
                 .exec()
             return res.status(200).json({ user })
@@ -100,15 +110,16 @@ class userController {
         try {
             const _id = req.user.id
             const friend_name = req.body.username
-            console.log(friend_name)
 
             const friendID = await userModel.findOne({ username: friend_name }, _id)
             if (!friendID) {
                 return res.status(400).json({ message: 'Such user doesn\'t exists' })
             }
-
-            const user = await userModel.findByIdAndUpdate({ _id }, { $pull: { friends: friendID } }, { new: true })
-                .populate('friends')
+            const user = await userModel.findByIdAndUpdate({ _id }, { $pull: { friends: friendID._id } }, { new: true })
+                .populate({
+                    path: 'friends',
+                    select: 'username'
+                })
                 .populate('posts')
                 .exec()
             return res.status(200).json({ user })
@@ -125,7 +136,10 @@ class userController {
                 return res.status(400).json({ message: 'Username is required' })
             }
             const friends = await userModel.findOne({ username }, 'friends')
-                .populate('friends')
+                .populate({
+                    path: 'friends',
+                    select: 'username'
+                })
                 .exec()
             if (!friends) {
                 return res.status(400).json({ message: 'Such user doesn\'t exists' })

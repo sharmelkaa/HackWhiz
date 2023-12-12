@@ -1,11 +1,11 @@
 import {useSelector} from "react-redux";
-import {List} from "../../../UI/List";
+import {UsersList} from "../../../UI/UsersList";
 
 export const MyFriends = () => {
     const { currentUser } = useSelector((state) => state.user)
     const friends = currentUser.friends.map((friend) => friend.username)
 
     return(
-        <List usernames={friends} />
+        <UsersList usernames={friends} />
     )
 }

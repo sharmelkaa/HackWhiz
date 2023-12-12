@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {useParams} from "react-router";
 import {getData} from "../../../../api/getData";
 import {Modal} from "../../../UI/Modal";
-import {List} from "../../../UI/List";
+import {UsersList} from "../../../UI/UsersList";
 
 export const OtherUserFriends = () => {
     const [modalMessage, setModalMessage] = useState('')
@@ -28,7 +28,7 @@ export const OtherUserFriends = () => {
     return(
         <>
             {modalMessage && <Modal text={modalMessage} onClose={onCloseModal} />}
-            {friends && <List usernames={friends} />}
+            {friends && <UsersList usernames={friends} />}
         </>
     )
 }

@@ -1,6 +1,6 @@
 import * as SC from './styles'
 
-export const List = ({ usernames }) => {
+export const UsersList = ({ usernames }) => {
     return(
         <SC.ListContainer>
             {

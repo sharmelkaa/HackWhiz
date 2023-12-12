@@ -1,4 +1,4 @@
-const { Schema,  model} = require('mongoose')
+const { Schema,  model } = require('mongoose')
 
 const postModel = new Schema({
     author: {
@@ -13,7 +13,7 @@ const postModel = new Schema({
         type: String,
         required: true
     },
-    forAll: {
+    friendsOnly: {
         type: Boolean
     },
     comments: {
