@@ -13,8 +13,41 @@ export const Textarea = styled.textarea`
   resize: none;
 `
 export const TextareaLabel = styled(Label)``
+export const CheckboxLabel = styled(Label)`
+  cursor: pointer;
+`
 export const TextareaWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+`
+export const Checkbox = styled.input`
+  -webkit-appearance: none;
+  appearance: none;
+  font-size: 18px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid aliceblue;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  &:before {
+    content: "";
+    width: 12px;
+    height: 12px;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 12px 12px mediumvioletred;
+  }
+  
+  &:checked::before {
+    transform: scale(1);
+  }
+`
+export const CheckboxWrapper = styled.div`
+  display: flex;
+  gap: 5px;
+  align-items: center;
 `

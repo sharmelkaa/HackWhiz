@@ -8,10 +8,10 @@ class adminController {
                 return res.status(400).json({ message: 'You don\'t have administrative rights' })
             }
 
-            const users_list = await allUsersModel.findById({ _id: ALL_USERS_ID}).populate('users').exec()
-
+            const users_list = await allUsersModel.findById({ _id: ALL_USERS_ID})
+                .populate('users')
+                .exec()
             return res.status(200).json(users_list.users)
-
         } catch (e) {
             res.status(400).json({ message: e.message })
         }

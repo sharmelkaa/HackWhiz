@@ -18,3 +18,8 @@ export const Body = styled.div`
   display: flex;
   font-style: oblique;
 `
+export const Span = styled.span`
+  font-style: italic;
+  font-size: 0.7em;
+  color: orangered;
+`

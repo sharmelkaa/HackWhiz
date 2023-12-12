@@ -6,12 +6,10 @@ export const FieldWrapper = styled.div`
   gap: 10px;
   position: relative;
 `
-
 export const Label = styled.label`
   color: aliceblue;
   font-size: 24px;
 `
-
 export const Input = styled.input`
   outline: none;
   border: none;

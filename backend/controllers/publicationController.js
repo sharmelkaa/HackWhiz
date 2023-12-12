@@ -4,8 +4,8 @@ class publicationController {
     async post(req, res) {
         try {
             const _id = req.user.id
-            const { title, body, forAll } = req.body
-            const newPublication = await postModel.create({ author: _id, title, body, forAll })
+            const { title, body, friendsOnly } = req.body
+            const newPublication = await postModel.create({ author: _id, title, body, friendsOnly })
             const user = await userModel.findByIdAndUpdate({ _id }, { $push: { posts: newPublication._id } }, { new: true })
                 .populate('friends')
                 .populate('posts')
@@ -21,12 +21,26 @@ class publicationController {
             if (!username) {
                 return res.status(400).json({ message: 'Username is required' })
             }
-            const posts = await userModel.findOne({ username }, 'posts')
-                .populate('posts')
-                .exec()
-            if (!posts) {
-                return res.status(400).json({ message: 'Such user doesn\'t exists' })
+
+            const isFriend = req.query.isFriend
+            if (isFriend === 'true') {
+                const posts = await postModel.find({})
+                    .populate({
+                        path: 'author',
+                        match: { username },
+                        select: 'username'
+                    })
+                    .exec()
+                return res.status(200).json({ posts })
             }
+
+            const posts = await postModel.find({ friendsOnly: false })
+                .populate({
+                    path: 'author',
+                    match: { username },
+                    select: 'username'
+                })
+                .exec()
             return res.status(200).json({ posts })
         } catch (e) {
             res.status(400).json({ message: e.message })

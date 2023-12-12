@@ -43,7 +43,10 @@ class authController {
             await tokenModel.create({ user: user._id, accessToken: accessToken })
 
             user = await userModel.findOne({ username })
-                .populate('friends')
+                .populate({
+                    path: 'friends',
+                    select: 'username'
+                })
                 .populate('posts')
                 .exec()
 
