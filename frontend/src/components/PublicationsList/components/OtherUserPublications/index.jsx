@@ -9,7 +9,10 @@ import {useSelector} from "react-redux";
 
 export const OtherUserPublications = () => {
     const [modalMessage, setModalMessage] = useState('')
-    const [publications, setPublications] = useState(null)
+    const [publications, setPublications] = useState([])
+    const postsCopy = [...publications]
+    postsCopy.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+
     const { username } = useParams()
     const { currentUser: { friends }} = useSelector((state) => state.user)
     const isFriend = friends.map((friend) => friend.username).includes(username)
@@ -25,7 +28,7 @@ export const OtherUserPublications = () => {
                 setModalMessage(response.message)
                 return
             }
-            setPublications(response.posts)
+            setPublications(response.posts.posts)
         }
         getPublications()
     }, [username]);
@@ -35,10 +38,16 @@ export const OtherUserPublications = () => {
             {modalMessage && <Modal text={modalMessage} onClose={onCloseModal} />}
             {publications &&
                 <SC.Container>
-                    <SC.Author>{`${ucFirst(username)}\`s`} Publications</SC.Author>
-                    <SC.Publications>
-                        {publications.length && publications.map((publication) => <Publication post={publication} key={publication._id}/>)}
-                    </SC.Publications>
+                    {publications.length === 0 &&
+                        <SC.NoPublications>{`${ucFirst(username)}`} has no publications yet....</SC.NoPublications>}
+                    {publications.length !== 0 &&
+                        <>
+                            <SC.Author>{`${ucFirst(username)}\`s`} Publications</SC.Author>
+                            <SC.Publications>
+                                {postsCopy.map((publication) => <Publication post={publication} key={publication._id}/>)}
+                            </SC.Publications>
+                        </>
+                    }
                 </SC.Container>
             }
         </>

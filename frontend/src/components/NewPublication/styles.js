@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import {Label} from "../UI/FormField/styles";
+import {NavLink} from "react-router-dom";
 
 export const Textarea = styled.textarea`
   outline: none;
@@ -50,4 +51,15 @@ export const CheckboxWrapper = styled.div`
   display: flex;
   gap: 5px;
   align-items: center;
+`
+export const Link = styled(NavLink)`
+  color: white;
+  font-size: 32px;
+  text-decoration: none;
+  font-style: italic;
+  text-shadow: 0 0 10px #0073e6, 0 0 10px #0073e6, 0 0 10px #0073e6;
+
+  &:hover {
+    color: #0073e6;
+  }
 `
