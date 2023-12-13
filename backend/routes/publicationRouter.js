@@ -9,4 +9,8 @@ publicationRouter.post('/post', authMiddleware, publicationController.post)
 
 publicationRouter.get('/get_posts', authMiddleware, publicationController.getPosts)
 
+publicationRouter.delete('/delete_post', authMiddleware, publicationController.deletePost)
+
+publicationRouter.patch('/edit_post', authMiddleware, publicationController.editPost)
+
 module.exports = publicationRouter

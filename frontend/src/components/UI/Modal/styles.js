@@ -8,8 +8,10 @@ export const ModalWrapper = styled.div`
   height: 100%;
   background: rgba(0, 0, 0, 0.8);
   z-index: 1;
+  cursor: pointer;
 `
 export const Modal = styled.div`
+  cursor: default;
   position: fixed;
   top: 50%;
   left: 50%;

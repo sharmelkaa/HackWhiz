@@ -19,6 +19,7 @@ export const NewPublication = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm({ mode: "onChange" })
     const [modalMessage, setModalMessage] = useState('')
     const dispatch = useDispatch()
+    const { currentUser: { username }} = useSelector((state) => state.user)
 
     const onCloseModal = () => {
         setModalMessage('')
@@ -35,7 +36,13 @@ export const NewPublication = () => {
     }
     return(
         <>
-            {modalMessage && <Modal text={modalMessage} onClose={onCloseModal} />}
+            {modalMessage &&
+                <Modal
+                    text={modalMessage}
+                    onClose={onCloseModal}
+                    children={<SC.Link to={`/${username}/publications`}>Publications --></SC.Link>}
+                    />
+            }
             <FormWrapper>
                 <Form onSubmit={handleSubmit(onSubmit)}>
                     <FormHeader>Create New Publication</FormHeader>
