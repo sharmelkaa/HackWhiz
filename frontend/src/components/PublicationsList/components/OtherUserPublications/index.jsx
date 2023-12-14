@@ -12,12 +12,16 @@ export const OtherUserPublications = () => {
     const [publications, setPublications] = useState([])
     const postsCopy = [...publications]
     postsCopy.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
-
     const { username } = useParams()
-    const { currentUser: { friends }} = useSelector((state) => state.user)
-    const isFriend = friends.map((friend) => friend.username).includes(username)
+    const { currentUser: { friends }, isAdmin } = useSelector((state) => state.user)
+    const isFriend = isAdmin ? true : friends.map((friend) => friend.username).includes(username)
+
     const onCloseModal = () => {
         setModalMessage('')
+    }
+
+    const onChangePublications = (newValue) => {
+        setPublications(newValue)
     }
 
     useEffect(() => {
@@ -31,7 +35,7 @@ export const OtherUserPublications = () => {
             setPublications(response.posts.posts)
         }
         getPublications()
-    }, [username]);
+    }, []);
 
     return(
         <>
@@ -44,7 +48,13 @@ export const OtherUserPublications = () => {
                         <>
                             <SC.Author>{`${ucFirst(username)}\`s`} Publications</SC.Author>
                             <SC.Publications>
-                                {postsCopy.map((publication) => <Publication post={publication} key={publication._id}/>)}
+                                {postsCopy.map((publication) =>
+                                    <Publication
+                                        post={publication}
+                                        key={publication._id}
+                                        setPublications={onChangePublications}
+                                        publications={postsCopy}
+                                    />)}
                             </SC.Publications>
                         </>
                     }

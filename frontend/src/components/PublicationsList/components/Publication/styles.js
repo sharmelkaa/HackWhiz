@@ -14,6 +14,7 @@ export const FirstRow = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 15px;
 `
 export const Title = styled.div`
   display: flex;
@@ -56,7 +57,6 @@ export const Label = styled(TextareaLabel)``
 export const CheckboxLabel = styled(Label)`
   cursor: pointer;
 `
-
 export const Checkbox = styled.input`
   -webkit-appearance: none;
   appearance: none;
@@ -94,4 +94,45 @@ export const Close = styled.img`
   cursor: pointer;
   position: absolute;
   right: 0;
+`
+export const Options = styled.div`
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+  font-size: 24px;
+  font-style: italic;
+`
+export const No = styled.div`
+  color: black;
+  cursor: pointer;
+  padding: 5px;
+  border: 2px solid transparent;
+  
+  &:hover {
+    font-weight: bold;
+  }
+`
+export const ShowComments = styled.div`
+  align-self: flex-end;
+  font-size: 24px;
+  font-style: italic;
+  cursor: pointer;
+  letter-spacing: 1px;
+
+  &:hover {
+    text-shadow:0 0 5px aliceblue, 0 0 5px aliceblue, 0 0 5px aliceblue;
+  }
+`
+export const Yes = styled(No)`
+  color: black;
+  cursor: pointer;
+  padding: 5px;
+
+  &:hover {
+    font-weight: normal;
+    transition: 120ms border linear;
+    border: 2px solid red;
+    border-radius: 5px;
+    background-color: rgba(255, 0, 0, 0.58);
+  }
 `

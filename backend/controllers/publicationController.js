@@ -26,9 +26,7 @@ class publicationController {
 
             if (isFriend === 'true') {
                 const posts = await userModel.findOne({ username }, 'posts')
-                    .populate({
-                        path: 'posts'
-                    })
+                    .populate('posts')
                     .exec()
                 return res.status(200).json({ posts })
             }
@@ -43,7 +41,6 @@ class publicationController {
             res.status(400).json({ message: e.message })
         }
     }
-
     async deletePost(req, res) {
         try {
             const _id = req.user.id
@@ -63,7 +60,6 @@ class publicationController {
             res.status(400).json({ message: e.message })
         }
     }
-
     async editPost(req, res) {
         try {
             const _id = req.user.id

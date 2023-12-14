@@ -11,13 +11,12 @@ import {postData} from "../../../../api/postData";
 import {setUser} from "../../../../slices/userSlice";
 import {deleteData} from "../../../../api/deleteData";
 
-const AVATAR = 'avatar'
 const API_URL = 'http://localhost:3002/'
 export const OtherUserPage = () => {
     const [otherUser, setOtherUser] = useState(null)
     const [modalMessage, setModalMessage] = useState('')
     const { username } = useParams()
-    const { currentUser: { friends } } = useSelector((state) => state.user)
+    const { currentUser: { friends }, isAdmin } = useSelector((state) => state.user)
     const dispatch = useDispatch()
     const isMyFriend = friends.map((friend) => friend.username).includes(username)
 
@@ -63,11 +62,13 @@ export const OtherUserPage = () => {
             {otherUser && <>
                 <SC.Container>
                     <SC.Wrapper>
-                        <Avatar image={otherUser.avatar ? API_URL+AVATAR : no_image} />
-                        <SC.ButtonWrapper>
-                            {isMyFriend && <Button onClick={unfollow}>Unfollow</Button>}
-                            {!isMyFriend && <Button onClick={buddyUp}>Buddy Up</Button>}
-                        </SC.ButtonWrapper>
+                        <Avatar avatar={otherUser.avatar ? API_URL+otherUser.avatar : no_image} />
+                        {!isAdmin &&
+                            <SC.ButtonWrapper>
+                                {isMyFriend && <Button onClick={unfollow}>Unfollow</Button>}
+                                {!isMyFriend && <Button onClick={buddyUp}>Buddy Up</Button>}
+                            </SC.ButtonWrapper>
+                        }
                     </SC.Wrapper>
                     <SC.MainInfo>
                         {otherUser.username}

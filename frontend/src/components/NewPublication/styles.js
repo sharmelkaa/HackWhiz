@@ -53,13 +53,13 @@ export const CheckboxWrapper = styled.div`
   align-items: center;
 `
 export const Link = styled(NavLink)`
-  color: white;
-  font-size: 32px;
+  color: #0073e6;
+  font-size: 24px;
   text-decoration: none;
-  font-style: italic;
-  text-shadow: 0 0 10px #0073e6, 0 0 10px #0073e6, 0 0 10px #0073e6;
+  align-self: center;
+  font-style: oblique;
 
   &:hover {
-    color: #0073e6;
+    text-shadow: 0 0 10px #0073e6, 0 0 10px #0073e6, 0 0 10px #0073e6;
   }
 `
