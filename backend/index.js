@@ -6,6 +6,7 @@ const authRouter = require('./routes/authRouter')
 const userRouter = require('./routes/userRouter')
 const adminRouter = require('./routes/adminRouter')
 const publicationRouter = require('./routes/publicationRouter')
+const commentRouter = require('./routes/commentRouter')
 
 const app = express()
 app.use(cors())
@@ -15,6 +16,7 @@ app.use('/api', authRouter)
 app.use('/api', userRouter)
 app.use('/api', adminRouter)
 app.use('/api', publicationRouter)
+app.use('/api', commentRouter)
 
 const PORT = process.env.PORT || 3001
 

@@ -25,24 +25,13 @@ const initialState = {
     error
 }
 
-// export const updateUserData = createAsyncThunk(
-//     'user/updateUserData',
-//     async (thunkAPI) => {
-//         const response = await getData('personal_data')
-//
-//         if (response.hasOwnProperty('message')) {
-//             return thunkAPI.rejectWithValue(response.message)
-//         }
-//         return response
-//     }
-// )
-
 export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
         logIn: (state, action) => {
             state.isLogged = true
+            state.isAdmin = action.payload.username === 'admin'
             state.currentUser = action.payload
         },
         logOut: (state) => {
@@ -52,16 +41,7 @@ export const userSlice = createSlice({
         setUser: (state, action) => {
             state.currentUser = action.payload
         }
-    },
-    // extraReducers: (builder) => {
-    //     builder
-    //         .addCase(updateUserData.fulfilled, (state, action) => {
-    //             state.currentUser = action.payload
-    //     })
-    //         .addCase(updateUserData.rejected, (state, action) => {
-    //             state.error = action.payload
-    //     })
-    // },
+    }
 })
 
 export const { logIn, logOut, setUser } = userSlice.actions

@@ -57,7 +57,7 @@ export const AvatarWithEditRights = () => {
         <SC.AvatarContainer>
             {modalMessage && <Modal text={modalMessage} onClose={onCloseModal} />}
 
-            <Avatar image={avatar ? API_URL+avatar : no_image} />
+            <Avatar avatar={avatar ? API_URL+avatar : no_image} />
 
             <SC.FileInput
                     id={AVATAR}

@@ -40,7 +40,7 @@ export const NewPublication = () => {
                 <Modal
                     text={modalMessage}
                     onClose={onCloseModal}
-                    children={<SC.Link to={`/${username}/publications`}>Publications --></SC.Link>}
+                    children={<SC.Link to={`/${username}/publications`}>My publications</SC.Link>}
                     />
             }
             <FormWrapper>

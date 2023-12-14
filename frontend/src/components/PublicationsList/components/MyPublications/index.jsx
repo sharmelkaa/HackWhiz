@@ -20,6 +20,7 @@ export const MyPublications = () => {
     return(
         <SC.Container>
             <SC.Author>My Publications</SC.Author>
+            <SC.Link to={'/new_publication'}>Create New Publication --></SC.Link>
             <SC.Publications>
                 {postsCopy.map((post) =>
                     <Publication

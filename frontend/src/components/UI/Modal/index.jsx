@@ -5,7 +5,7 @@ export const Modal = ({ children, text, onClose }) => {
 
     return(
         <SC.ModalWrapper onClick={onClose}>
-            <SC.Modal>
+            <SC.Modal onClick={e => e.stopPropagation()}>
                 <SC.CloseIcon src={close} alt='close icon' onClick={onClose}/>
                 <SC.ModalText>{text}</SC.ModalText>
                 {children}

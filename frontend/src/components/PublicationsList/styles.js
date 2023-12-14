@@ -10,14 +10,14 @@ export const Container = styled.div`
   gap: 15px;
 `
 export const Link = styled(NavLink)`
-  color: white;
-  font-size: 32px;
+  color: #fe019a;
+  font-size: 22px;
   text-decoration: none;
   font-style: italic;
-  text-shadow: 0 0 10px #fe019a, 0 0 10px #fe019a, 0 0 10px #fe019a;
+  align-self: flex-end;
 
   &:hover {
-    color: #fe019a;
+    text-shadow: 0 0 10px #fe019a, 0 0 10px #fe019a, 0 0 10px #fe019a;
   }
 `
 export const Author = styled.div`

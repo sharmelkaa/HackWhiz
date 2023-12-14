@@ -24,7 +24,7 @@ export const Modal = styled.div`
   opacity: 0.8;
   padding: 5px 20px 5px 15px;
   display: flex;
-  gap: 5px;
+  gap: 10px;
   flex-direction: column;
   width: auto;
 `
@@ -33,7 +33,7 @@ export const ModalText = styled.div`
   color: black;
   font-weight: bold;
   text-align: center;
-  font-size: 28px;
+  font-size: 32px;
 `
 
 export const CloseIcon = styled.img`

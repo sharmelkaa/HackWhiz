@@ -38,10 +38,6 @@ const router = createBrowserRouter([
                 element: <CheckAuth><PublicationsList/></CheckAuth>
             },
             {
-                path: '/:username/publications/:id',
-                element: <CheckAuth><Publication/></CheckAuth>
-            },
-            {
                 path: '/admin',
                 element: <CheckAuth><AdminPage/></CheckAuth>
             },
