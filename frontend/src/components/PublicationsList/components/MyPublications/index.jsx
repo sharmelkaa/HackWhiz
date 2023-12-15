@@ -6,7 +6,6 @@ export const MyPublications = () => {
     const { currentUser: { posts } } = useSelector((state) => state.user)
     const postsCopy = [...posts]
     postsCopy.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
-    const dispatch = useDispatch()
 
     if (posts.length === 0) {
         return(

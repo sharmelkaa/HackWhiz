@@ -112,7 +112,7 @@ export const No = styled.div`
     font-weight: bold;
   }
 `
-export const ShowComments = styled.div`
+export const ManageComments = styled.div`
   align-self: flex-end;
   font-size: 24px;
   font-style: italic;

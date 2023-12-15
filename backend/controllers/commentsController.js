@@ -6,10 +6,15 @@ class commentsController {
         try {
             const { comment, author, post } = req.body
             const userID = await userModel.findOne({ username: author }, '_id')
-            const newComment = await commentModel.create({ comment, author: userID._id, post })
-            const updatedPost = await postModel.findByIdAndUpdate({ _id: post }, { $push: { comments: newComment._id }}, { new: true })
 
-            return res.status(200).json({ newComment })
+            const newComment = await commentModel.create({ comment, author: userID._id, post })
+            await postModel.findByIdAndUpdate({ _id: post }, { $push: { comments: newComment._id }}, { new: true })
+
+            const updatedComments = await commentModel.find({ post })
+                .populate('author')
+                .exec()
+
+            return res.status(200).json({ updatedComments })
         } catch (e) {
             res.status(400).json({ message: e.message })
         }
@@ -31,14 +36,38 @@ class commentsController {
     }
     async deleteComment(req, res) {
         try {
+            const { commentID, postID } = req.body
+            const deletedComment = await commentModel.deleteOne({ _id: commentID})
+            if (deletedComment.deletedCount === 0) {
+                return res.status(400).json({ message: 'Comment was not found' })
+            }
 
+            await postModel.findByIdAndUpdate({ _id: postID }, { $pull: { comments: commentID } }, { new: true })
+
+            const updatedComments = await commentModel.find({ post: postID })
+                .populate('author')
+                .exec()
+
+            return res.status(200).json({ updatedComments })
         } catch (e) {
             res.status(400).json({ message: e.message })
         }
     }
+
     async editComment(req, res) {
         try {
+            const { commentID, postID, changes } = req.body
 
+            const editedComment = await commentModel.findByIdAndUpdate({ _id: commentID }, { ...changes })
+            if (!editedComment) {
+                return res.status(400).json({ message: 'Comment was not found' })
+            }
+
+            const updatedComments = await commentModel.find({ post: postID })
+                .populate('author')
+                .exec()
+
+            return res.status(200).json({ updatedComments })
         } catch (e) {
             res.status(400).json({ message: e.message })
         }

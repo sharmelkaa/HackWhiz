@@ -1,20 +1,17 @@
 import * as SC from './styles'
-import {useForm} from "react-hook-form";
-import send from './svg/send.svg'
-import {postData} from "../../api/postData";
 import {useEffect, useState} from "react";
 import {Modal} from "../UI/Modal";
 import {getData} from "../../api/getData";
-import no_image from "../UserPage/images/no_image.png";
-import {Avatar} from "../UI/Avatar";
+import {useDispatch, useSelector} from "react-redux";
+import {Comment} from "./components/Comment";
+import {AddCommentForm} from "./components/AddCommentForm";
+import {updateComments} from "../../slices/commentsSlice";
 
-const COMMENT = 'comment'
-const API_URL = 'http://localhost:3002/'
-export const Comments = ({ author, post, hideComments, show }) => {
-    const { register, handleSubmit, formState: { errors }} = useForm({ mode: "onChange" })
+export const Comments = ({ post, author }) => {
     const [modalMessage, setModalMessage] = useState(null)
-    const [comments, setComments] = useState(null)
-    console.log('rerender')
+    const { comments } = useSelector((state) => state.comments)
+    const { isAdmin } = useSelector((state) => state.user)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         const getComments = async() => {
@@ -23,58 +20,32 @@ export const Comments = ({ author, post, hideComments, show }) => {
                 setModalMessage(response.message)
                 return
             }
-            setComments(response.comments)
+            dispatch(updateComments(response.comments))
         }
+
         getComments()
     }, []);
     const onCloseModal = () => {
         setModalMessage(null)
     }
-    const onSubmit = async(data) => {
-        data.post = post
-        data.author = author
-
-        console.log('im here')
-        const response = await postData('comment', data)
-        if (response.hasOwnProperty('message')) {
-            setModalMessage(response.message)
-            return
-        }
-
-
+    const onOpenModal = (message) => {
+        setModalMessage(message)
     }
 
     return(
         <>
             {modalMessage && <Modal text={modalMessage} onClose={onCloseModal} /> }
             {comments &&
-                <SC.Main show={show}>
-                    <SC.Header>Comments <SC.Hide onClick={hideComments}>Hide comments</SC.Hide></SC.Header>
-                    {comments.map((comment) =>
-                            <SC.Comment key={comment._id}>
-                                <SC.Content>
-                                    <Avatar
-                                        avatar={comment.author.avatar ? API_URL+comment.author.avatar : no_image}
-                                        size='small'
-                                    />
-                                    <SC.Text>
-                                        <SC.Author>{comment.author.username}</SC.Author>
-                                        <div>{comment.comment}</div>
-                                    </SC.Text>
-                                </SC.Content>
-                            </SC.Comment>
-                    )}
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                    <SC.SendRow>
-                        <SC.CommentInput
-                            type='text'
-                            placeholder='Сomment...'
-                            {...register(COMMENT, { required: 'Comment can\'t be empty' })}
+                <SC.Main>
+                    {!comments.length && <div>No comments yet...</div>}
+                    {comments.map((comment) => <Comment comment={comment} key={comment._id} post={post} />)}
+                    {!isAdmin &&
+                        <AddCommentForm
+                            onOpenModal={onOpenModal}
+                            post={post}
+                            author={author}
                         />
-                        <SC.Button><SC.Send src={send} /></SC.Button>
-                    </SC.SendRow>
-                    {errors[COMMENT] && <SC.CommentError>{errors[COMMENT].message}</SC.CommentError>}
-                </form>
+                    }
                 </SC.Main>
             }
         </>
