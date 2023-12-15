@@ -10,7 +10,6 @@ export const AvatarContainer = styled.div`
   gap: 15px;
   max-width: 300px;
 `
-
 export const Label = styled.label`
   cursor: pointer;
   font-size: 18px;

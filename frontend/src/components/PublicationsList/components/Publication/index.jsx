@@ -16,6 +16,7 @@ import {isObjectEmpty} from "../../../../helpers/isObjectEmpty";
 import {patchData} from "../../../../api/patchData";
 import {useParams} from "react-router";
 import {Comments} from "../../../Comments";
+import {current} from "@reduxjs/toolkit";
 
 const TITLE = 'title'
 const BODY = 'body'
@@ -29,6 +30,8 @@ export const Publication = ({ post, access, setPublications, publications }) => 
     const [editMode, setEditMode] = useState(false)
     const { isAdmin } = useSelector((state) => state.user)
     const { username } = useParams()
+    const { currentUser } = useSelector((state) => state.user)
+
     const {
         register,
         handleSubmit,
@@ -82,9 +85,8 @@ export const Publication = ({ post, access, setPublications, publications }) => 
         }
         dispatch(setUser(response.user))
     }
-
-    const hideComments = () => {
-        setShowComments(false)
+    const toggleComments = () => {
+        setShowComments(prevState => !prevState)
     }
 
     return(
@@ -118,13 +120,9 @@ export const Publication = ({ post, access, setPublications, publications }) => 
                             {isAdmin && <SC.SVG src={delete_icon} onClick={() => setWarningModal(DELETE_WARNING)}/>}
                         </SC.FirstRow>
                         <SC.Body>{post.body}</SC.Body>
-                        {!showComments && <SC.ShowComments onClick={() => setShowComments(true)}>Show Comments</SC.ShowComments>}
-                        <Comments
-                            show={showComments}
-                            hideComments={hideComments}
-                            author={username}
-                            post={postID}
-                        />
+                        <SC.ManageComments onClick={toggleComments}>
+                            {showComments ? 'Hide Comments' : 'Show Comments'}</SC.ManageComments>
+                        {showComments && <Comments author={currentUser.username} post={postID}/>}
                     </>
                 }
                 {editMode &&
