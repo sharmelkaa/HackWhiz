@@ -2,8 +2,8 @@ import * as SC from '../../styles'
 import {useSelector} from "react-redux";
 import {useState} from "react";
 import {Modal} from "../../../UI/Modal";
-import {AvatarOld, AvatarWithEditRights} from "./components/AvatarWithEditRights";
-import {AvatarWrapper} from "../../../UI/Avatar/styles";
+import {AvatarWithEditRights} from "./components/AvatarWithEditRights";
+import {PotentialFriends} from "../../../PotentialFriends";
 
 export const MyPage = () =>  {
     const { currentUser } = useSelector((state) => state.user)
@@ -36,9 +36,7 @@ export const MyPage = () =>  {
              </SC.Container>
 
             <SC.Container>
-                <SC.LastPostWrapper>
-                   <div>Last Post</div>
-                 </SC.LastPostWrapper>
+                <PotentialFriends username={currentUser.username} />
              </SC.Container>
          </>)
 }

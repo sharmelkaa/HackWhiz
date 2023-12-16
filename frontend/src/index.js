@@ -6,7 +6,6 @@ import { WelcomePage } from "./components/WelcomePage";
 import { UserPage } from "./components/UserPage";
 import { FriendsList } from "./components/FriendsList";
 import { PublicationsList } from "./components/PublicationsList";
-import { Publication } from "./components/PublicationsList/components/Publication";
 import { AdminPage } from "./components/AdminPage";
 import { SignUp } from "./components/SignUp";
 import { Root } from "./components/Root";

@@ -41,6 +41,33 @@ class publicationController {
             res.status(400).json({ message: e.message })
         }
     }
+
+    async getRecentPost(req, res) {
+        const username = req.query.username
+        if (!username) {
+            return res.status(400).json({ message: 'Username is required' })
+        }
+
+        const isFriend = req.query.isFriend
+
+        let posts
+
+        if (isFriend === 'true') {
+            posts = await userModel.findOne({ username }, 'posts')
+                .populate('posts')
+                .exec()
+        } else {
+            posts = await userModel.findOne({ username }, 'posts')
+                .populate({
+                    path: 'posts',
+                    match: { friendsOnly: false }
+                })
+                .exec()
+        }
+
+        const recentPost = posts.posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0]
+        return res.status(200).json(recentPost)
+    }
     async deletePost(req, res) {
         try {
             const _id = req.user.id

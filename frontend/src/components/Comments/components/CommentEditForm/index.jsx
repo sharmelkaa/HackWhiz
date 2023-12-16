@@ -31,7 +31,12 @@ export const CommentEditForm = ({ commentID, comment, postID, closeEditForm }) =
             setModalMessage(response.message)
             return
         }
-        dispatch(updateComments(response.updatedComments))
+
+        const payload = {
+            postID,
+            commentsList: response.updatedComments
+        }
+        dispatch(updateComments(payload))
         closeEditForm()
     }
     const onCloseModal = () => {

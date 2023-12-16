@@ -4,19 +4,21 @@ import * as SC from '../../styles'
 
 export const MyFriends = () => {
     const { currentUser: { friends } } = useSelector((state) => state.user)
-    if (friends.length === 0) {
-        return(
-            <SC.Container>
-                <SC.NoFriends>You don't have any friends yet...</SC.NoFriends>
-                <div>FIND THEM</div>
-            </SC.Container>
-        )
-    }
+    const friendsNames = friends.map((friend) => friend.username)
+    const haveFriends = friends.length !== 0
 
-    const usernames = friends.map((friend) => friend.username)
     return(
         <SC.Container>
-            <UsersList usernames={usernames} />
+            {!haveFriends &&
+                <>
+                    <SC.FriendsHeader>You don't have any friends yet...</SC.FriendsHeader>
+                </>
+            }
+            {haveFriends &&
+                <>
+                    <SC.FriendsHeader>My Friends</SC.FriendsHeader>
+                    <UsersList usernames={friendsNames} />
+                </>}
         </SC.Container>
     )
 }

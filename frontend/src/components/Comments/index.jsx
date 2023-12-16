@@ -15,12 +15,21 @@ export const Comments = ({ post, author }) => {
 
     useEffect(() => {
         const getComments = async() => {
+            if (comments !== null && comments.hasOwnProperty(post)) {
+                return
+            }
+
             const response = await getData(`/get_comments?postID=${post}`)
             if (response.hasOwnProperty('message')) {
                 setModalMessage(response.message)
                 return
             }
-            dispatch(updateComments(response.comments))
+
+            const payload = {
+                postID: post,
+                commentsList: response.comments
+            }
+            dispatch(updateComments(payload))
         }
 
         getComments()
@@ -36,17 +45,19 @@ export const Comments = ({ post, author }) => {
         <>
             {modalMessage && <Modal text={modalMessage} onClose={onCloseModal} /> }
             {comments &&
-                <SC.Main>
-                    {!comments.length && <div>No comments yet...</div>}
-                    {comments.map((comment) => <Comment comment={comment} key={comment._id} post={post} />)}
-                    {!isAdmin &&
-                        <AddCommentForm
-                            onOpenModal={onOpenModal}
-                            post={post}
-                            author={author}
-                        />
-                    }
-                </SC.Main>
+                <>
+                    {comments[post] &&
+                        <SC.Main>
+                            {comments[post].length === 0 && <div>No comments yet...</div>}
+                            {comments[post].length !== 0 && comments[post].map((comment) => <Comment comment={comment} key={comment._id} post={post} />)}
+                            {!isAdmin &&
+                                <AddCommentForm
+                                    onOpenModal={onOpenModal}
+                                    post={post}
+                                    author={author}
+                                />}
+                        </SC.Main>}
+                </>
             }
         </>
     )

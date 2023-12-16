@@ -29,7 +29,12 @@ export const Comment = ({ comment, post }) => {
             setModalMessage(response.message)
             return
         }
-        dispatch(updateComments(response.updatedComments))
+
+        const payload = {
+            postID: post,
+            commentsList: response.updatedComments
+        }
+        dispatch(updateComments(payload))
     }
 
     const closeEditForm = () => {

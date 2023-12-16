@@ -21,6 +21,8 @@ const userRouter = new Router()
 
 userRouter.get('/personal_data', authMiddleware, userController.getPersonalData)
 
+userRouter.get('/get_potential_friends', authMiddleware, userController.getPotentialFriends)
+
 userRouter.get('/user', authMiddleware, userController.getUserData)
 
 userRouter.post('/upload_avatar', [

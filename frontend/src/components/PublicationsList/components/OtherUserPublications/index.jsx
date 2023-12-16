@@ -6,12 +6,14 @@ import * as SC from "../../styles";
 import {Publication} from "../Publication";
 import {ucFirst} from "../../../UI/FormField/helpers/ucFirst";
 import {useSelector} from "react-redux";
+import {UserLink} from "../../../UI/UserLink";
+import {dateDescSort} from "../../../../helpers/dateDescSort";
 
+const COLOR = '#4955ff'
 export const OtherUserPublications = () => {
     const [modalMessage, setModalMessage] = useState('')
-    const [publications, setPublications] = useState([])
-    const postsCopy = [...publications]
-    postsCopy.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+    const [publications, setPublications] = useState(null)
+    const sortedPublications = dateDescSort(publications)
     const { username } = useParams()
     const { currentUser: { friends }, isAdmin } = useSelector((state) => state.user)
     const isFriend = isAdmin ? true : friends.map((friend) => friend.username).includes(username)
@@ -35,7 +37,7 @@ export const OtherUserPublications = () => {
             setPublications(response.posts.posts)
         }
         getPublications()
-    }, []);
+    }, [username, isFriend]);
 
     return(
         <>
@@ -43,17 +45,34 @@ export const OtherUserPublications = () => {
             {publications &&
                 <SC.Container>
                     {publications.length === 0 &&
-                        <SC.NoPublications>{`${ucFirst(username)}`} has no publications yet....</SC.NoPublications>}
+                        <SC.PublicationsHeader>
+                            <UserLink
+                                color={COLOR}
+                                to={`/${username}`}
+                            >
+                                {ucFirst(username)}
+                            </UserLink>
+                            &nbsp;has no publications yet....</SC.PublicationsHeader>}
+
                     {publications.length !== 0 &&
                         <>
-                            <SC.Author>{`${ucFirst(username)}\`s`} Publications</SC.Author>
+                            <SC.Author>
+                                <UserLink
+                                    color={COLOR}
+                                    to={`/${username}`}
+                                >
+                                    {`${ucFirst(username)}\`s`}
+                                </UserLink>
+                                &nbsp;Publications
+                            </SC.Author>
+                            {!isFriend && <SC.Warning>*this user may has private publications. Buddy up with him to see them!</SC.Warning>}
                             <SC.Publications>
-                                {postsCopy.map((publication) =>
+                                {sortedPublications.map((publication) =>
                                     <Publication
                                         post={publication}
                                         key={publication._id}
                                         setPublications={onChangePublications}
-                                        publications={postsCopy}
+                                        publications={sortedPublications}
                                     />)}
                             </SC.Publications>
                         </>

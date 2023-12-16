@@ -5,7 +5,10 @@ import {Modal} from "../../../UI/Modal";
 import {UsersList} from "../../../UI/UsersList";
 import * as SC from "../../styles";
 import {ucFirst} from "../../../UI/FormField/helpers/ucFirst";
+import {UserLink} from "../../../UI/UserLink";
+import {Loader} from "../../../UI/Loader";
 
+const COLOR = 'chartreuse'
 export const OtherUserFriends = () => {
     const [modalMessage, setModalMessage] = useState('')
     const [friends, setFriends] = useState(null)
@@ -32,8 +35,28 @@ export const OtherUserFriends = () => {
             {modalMessage && <Modal text={modalMessage} onClose={onCloseModal} />}
             {friends &&
                 <SC.Container>
-                    {friends.length === 0 && <SC.NoFriends>{`${ucFirst(username)}`} doesn't have any friends yet...</SC.NoFriends>}
-                    {friends.length !== 0 && <UsersList usernames={friends} />}
+                    {friends.length === 0 && <SC.FriendsHeader>
+                        {<UserLink
+                            color={COLOR}
+                            to={`/${username}`}
+                        >
+                            {ucFirst(username)}
+                        </UserLink>}
+                        &nbsp;doesn't have any friends yet...
+                    </SC.FriendsHeader>}
+                    {friends.length !== 0 &&
+                        <>
+                            <SC.FriendsHeader>
+                                {<UserLink
+                                    color={COLOR}
+                                    to={`/${username}`}
+                                >
+                                    {`${ucFirst(username)}\'s`}
+                                </UserLink>}
+                                &nbsp;Friends
+                            </SC.FriendsHeader>
+                            <UsersList usernames={friends} />
+                        </>}
                 </SC.Container>
             }
         </>
