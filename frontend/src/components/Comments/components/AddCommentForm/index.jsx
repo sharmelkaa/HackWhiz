@@ -18,7 +18,12 @@ export const AddCommentForm = ({ onOpenModal, post, author }) => {
             onOpenModal(response.message)
             return
         }
-        dispatch(updateComments(response.updatedComments))
+
+        const payload = {
+            postID: post,
+            commentsList: response.updatedComments
+        }
+        dispatch(updateComments(payload))
         reset()
     }
 

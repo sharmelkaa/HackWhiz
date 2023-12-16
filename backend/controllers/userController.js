@@ -2,6 +2,9 @@ const userModel = require("../models/userModel");
 const fs = require('fs')
 const path = require('path')
 const MAIN_PATH = require('../main_path')
+const allUsersModel = require("../models/allUsersModel");
+
+const ALL_USERS_ID = '657045f873b78fc8371a217e'
 class userController {
     async getUserData(req, res) {
         try {
@@ -92,6 +95,11 @@ class userController {
                 return res.status(400).json({ message: 'Such user doesn\'t exists' })
             }
 
+            const alreadyFriend = await userModel.findOne({ friends : { "$in": [friendID] } })
+            if (alreadyFriend !== null) {
+                return res.status(400).json({ message: 'Such user is in friends list already' })
+            }
+
             const user = await userModel.findByIdAndUpdate({ _id }, { $push: { friends: friendID } }, { new: true })
                 .populate({
                     path: 'friends',
@@ -99,6 +107,9 @@ class userController {
                 })
                 .populate('posts')
                 .exec()
+
+            await userModel.findByIdAndUpdate({ _id: friendID._id }, { $push: { friends: _id } }, { new: true })
+
             return res.status(200).json({ user })
 
         } catch (e) {
@@ -115,6 +126,7 @@ class userController {
             if (!friendID) {
                 return res.status(400).json({ message: 'Such user doesn\'t exists' })
             }
+
             const user = await userModel.findByIdAndUpdate({ _id }, { $pull: { friends: friendID._id } }, { new: true })
                 .populate({
                     path: 'friends',
@@ -122,6 +134,9 @@ class userController {
                 })
                 .populate('posts')
                 .exec()
+
+            await userModel.findByIdAndUpdate({ _id: friendID._id }, { $pull: { friends: _id } }, { new: true })
+
             return res.status(200).json({ user })
 
         } catch (e) {
@@ -146,6 +161,36 @@ class userController {
             }
             
             return res.status(200).json({ friends })
+        } catch (e) {
+            res.status(400).json({ message: e.message })
+        }
+    }
+
+    async getPotentialFriends(req, res) {
+        try {
+            const username = req.query.username
+
+            const userFriends = await userModel.findOne({ username }, 'friends')
+                .populate({
+                    path: 'friends',
+                    select: 'username'
+                })
+                .exec()
+            const userFriendsUsernames = userFriends.friends.map((friend) => friend.username)
+
+
+            const allUsersList = await allUsersModel.findById({ _id: ALL_USERS_ID})
+                .populate({
+                    path: 'users',
+                    select: 'username'
+                })
+                .exec()
+            const allUsersUsernames = allUsersList.users.map((user) => user.username)
+
+            const potentialFriends = allUsersUsernames.filter((user) => !userFriendsUsernames.includes(user) && user !== username)
+
+            return res.status(200).json( potentialFriends )
+
         } catch (e) {
             res.status(400).json({ message: e.message })
         }

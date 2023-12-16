@@ -19,17 +19,11 @@ export const LinksWrapper = styled.div`
   gap: 15px;
   justify-content: space-between;
 `
-
 export const MainInfo = styled.div`
   display: flex;
   flex-direction: column;
   gap: 15px;
 `
-
-export const LastPostWrapper = styled.div`
-  display: flex;
-`
-
 export const FriendsLink= styled(NavLink)`
   cursor: pointer;
   font-size: 36px;
@@ -57,4 +51,49 @@ export const Wrapper = styled.div`
 export const ButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
+`
+
+export const ResentPostHeader = styled.div`
+  display: flex;
+  justify-content: center;
+  font-size: 42px;
+  color: yellow;
+  text-shadow: 4px 4px 9px yellow;
+`
+export const FirstRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+`
+export const Title = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  font-weight: bold;
+  font-size: 24px;
+`
+export const Body = styled.div`
+  display: flex;
+  font-style: oblique;
+`
+export const Span = styled.span`
+  font-style: italic;
+  font-size: 0.7em;
+  color: orangered;
+`
+export const RecentPost = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`
+export const ManageComments = styled.div`
+  align-self: flex-end;
+  font-size: 24px;
+  font-style: italic;
+  cursor: pointer;
+  letter-spacing: 1px;
+
+  &:hover {
+    text-shadow:0 0 5px aliceblue, 0 0 5px aliceblue, 0 0 5px aliceblue;
+  }
 `

@@ -3,5 +3,8 @@ import {RotatingLines} from "react-loader-spinner";
 
 export const Loader = () =>
     <SC.LoaderWrapper>
-        <RotatingLines />
+        <RotatingLines
+            strokeColor='aliceblue'
+            width='200'
+        />
     </SC.LoaderWrapper>

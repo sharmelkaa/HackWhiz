@@ -9,7 +9,10 @@ export const commentsSlice = createSlice({
     initialState,
     reducers: {
         updateComments: (state, action) => {
-            state.comments = action.payload
+            if (state.comments === null) {
+                state.comments = {}
+            }
+            state.comments[action.payload.postID] = action.payload.commentsList
         }
     }
 })

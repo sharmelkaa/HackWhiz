@@ -21,15 +21,21 @@ export const Link = styled(NavLink)`
   }
 `
 export const Author = styled.div`
-  color: #000ecd;;
-  text-shadow: 0 0 10px #000ecd;, 0 0 10px #000ecd;, 0 0 10px #000ecd;;
+  color: #4955ff;
   font-size: 48px;
 `
-export const NoPublications = styled.div`
-    font-size: 36px;
+export const PublicationsHeader = styled.div`
+  font-size: 36px;
+  color: #4955ff;
 `
 export const Publications = styled.div`
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
+`
+export const Warning = styled.div`
+  align-self: flex-end;
+  font-size: 18px;
+  font-style: italic;
+  color: orangered;
 `
