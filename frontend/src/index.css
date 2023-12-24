@@ -1,7 +1,7 @@
 * {
   box-sizing: border-box;
   font-family: 'Handjet', sans-serif;
-  color: white;
+  color: aliceblue;
 }
 
 html, body {
@@ -17,5 +17,10 @@ body {
 
 @font-face {
   font-family: 'Hacked';
-  src: local('Hacked-KerX'), url('./fonts/hacked-font/Hacked-KerX.ttf') format('truetype');
+  src: local('Hacked-KerX'), url('fonts/Hacked/Hacked-KerX.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Handjet';
+  src: local('Handjet-VariableFont_ELGR,ELSH,wght'), url('fonts/Handjet/Handjet-VariableFont_ELGR,ELSH,wght.ttf') format('truetype');
 }

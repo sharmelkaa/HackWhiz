@@ -14,7 +14,7 @@ class commentsController {
                 .populate('author')
                 .exec()
 
-            return res.status(200).json({ updatedComments })
+            return res.status(200).json(updatedComments)
         } catch (e) {
             res.status(400).json({ message: e.message })
         }
@@ -29,7 +29,7 @@ class commentsController {
                 .populate('author')
                 .exec()
 
-            return res.status(200).json({ comments })
+            return res.status(200).json(comments)
         } catch (e) {
             res.status(400).json({ message: e.message })
         }
@@ -48,7 +48,7 @@ class commentsController {
                 .populate('author')
                 .exec()
 
-            return res.status(200).json({ updatedComments })
+            return res.status(200).json(updatedComments)
         } catch (e) {
             res.status(400).json({ message: e.message })
         }
@@ -67,7 +67,7 @@ class commentsController {
                 .populate('author')
                 .exec()
 
-            return res.status(200).json({ updatedComments })
+            return res.status(200).json(updatedComments)
         } catch (e) {
             res.status(400).json({ message: e.message })
         }

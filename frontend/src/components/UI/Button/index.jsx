@@ -1,5 +1,4 @@
 import * as SC from './styles'
-
 export const Button = ({ children, type, onClick, disabled }) =>
     <SC.Button
         onClick={onClick}

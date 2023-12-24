@@ -10,7 +10,7 @@ class publicationController {
                 .populate('friends')
                 .populate('posts')
                 .exec()
-            return res.status(200).json({ user })
+            return res.status(200).json(user)
         } catch (e) {
             res.status(400).json({ message: e.message })
         }
@@ -18,25 +18,19 @@ class publicationController {
     async getPosts(req, res) {
         try {
             const username = req.query.username
+
             if (!username) {
                 return res.status(400).json({ message: 'Username is required' })
             }
 
             const isFriend = req.query.isFriend
-
-            if (isFriend === 'true') {
-                const posts = await userModel.findOne({ username }, 'posts')
-                    .populate('posts')
-                    .exec()
-                return res.status(200).json({ posts })
-            }
+            const populate = isFriend ? 'posts' : { path: 'posts', match: { friendsOnly: false } }
 
             const posts = await userModel.findOne({ username }, 'posts')
-                .populate({
-                    path: 'posts',
-                    match: { friendsOnly: false }
-                })
-            return res.status(200).json({ posts })
+                .populate(populate)
+                .exec()
+
+            return res.status(200).json(posts)
         } catch (e) {
             res.status(400).json({ message: e.message })
         }
@@ -44,27 +38,21 @@ class publicationController {
 
     async getRecentPost(req, res) {
         const username = req.query.username
+
         if (!username) {
             return res.status(400).json({ message: 'Username is required' })
         }
 
         const isFriend = req.query.isFriend
+        const populate = isFriend ? 'posts' : { path: 'posts', match: { friendsOnly: false } }
 
-        let posts
+        const posts = await userModel.findOne({ username }, 'posts')
+            .populate(populate)
+            .exec()
 
-        if (isFriend === 'true') {
-            posts = await userModel.findOne({ username }, 'posts')
-                .populate('posts')
-                .exec()
-        } else {
-            posts = await userModel.findOne({ username }, 'posts')
-                .populate({
-                    path: 'posts',
-                    match: { friendsOnly: false }
-                })
-                .exec()
+        if (posts.posts.length === 0) {
+            return res.status(200).json([])
         }
-
         const recentPost = posts.posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))[0]
         return res.status(200).json(recentPost)
     }
@@ -82,7 +70,7 @@ class publicationController {
                 .populate('friends')
                 .populate('posts')
                 .exec()
-            return res.status(200).json({ user })
+            return res.status(200).json(user)
         } catch (e) {
             res.status(400).json({ message: e.message })
         }
@@ -102,7 +90,7 @@ class publicationController {
                 .populate('friends')
                 .populate('posts')
                 .exec()
-            return res.status(200).json({ user })
+            return res.status(200).json(user)
 
         } catch (e) {
             res.status(400).json({ message: e.message })

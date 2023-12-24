@@ -4,7 +4,6 @@ const path = require('path')
 const MAIN_PATH = require('../main_path')
 const allUsersModel = require("../models/allUsersModel");
 
-const ALL_USERS_ID = '657045f873b78fc8371a217e'
 class userController {
     async getUserData(req, res) {
         try {
@@ -55,7 +54,7 @@ class userController {
                 })
                 .populate('posts')
                 .exec()
-            return res.status(200).json({ user })
+            return res.status(200).json(user)
         } catch (e) {
             res.status(400).json({ message: e.message })
         }
@@ -78,7 +77,7 @@ class userController {
                 .populate('posts')
                 .exec()
 
-            return res.status(200).json({ userAfterUpdate })
+            return res.status(200).json(userAfterUpdate)
 
         } catch (e) {
             res.status(400).json({ message: e.message })
@@ -110,7 +109,7 @@ class userController {
 
             await userModel.findByIdAndUpdate({ _id: friendID._id }, { $push: { friends: _id } }, { new: true })
 
-            return res.status(200).json({ user })
+            return res.status(200).json(user)
 
         } catch (e) {
             res.status(400).json({ message: e.message })
@@ -137,7 +136,7 @@ class userController {
 
             await userModel.findByIdAndUpdate({ _id: friendID._id }, { $pull: { friends: _id } }, { new: true })
 
-            return res.status(200).json({ user })
+            return res.status(200).json(user)
 
         } catch (e) {
             res.status(400).json({ message: e.message })
@@ -160,7 +159,7 @@ class userController {
                 return res.status(400).json({ message: 'Such user doesn\'t exists' })
             }
             
-            return res.status(200).json({ friends })
+            return res.status(200).json(friends)
         } catch (e) {
             res.status(400).json({ message: e.message })
         }
@@ -170,26 +169,16 @@ class userController {
         try {
             const username = req.query.username
 
-            const userFriends = await userModel.findOne({ username }, 'friends')
-                .populate({
-                    path: 'friends',
-                    select: 'username'
-                })
-                .exec()
-            const userFriendsUsernames = userFriends.friends.map((friend) => friend.username)
+            const user = await userModel.findOne({ username }).populate('friends')
+            const admin = await userModel.findOne({ username: 'admin' })
+            const userFriendIds = user.friends.map(friend => friend._id)
+            const potentialFriends = await userModel.find({ _id: { $nin: [...userFriendIds, user._id, admin._id] } })
 
+            const potentialFriendsUsernames = potentialFriends.map(user => user.username)
+            const shuffledPotentialFriendsUsernames = potentialFriendsUsernames.sort((a, b) => 0.5 - Math.random());
+            const limitedPotentialFriends = shuffledPotentialFriendsUsernames.slice(0, 11)
 
-            const allUsersList = await allUsersModel.findById({ _id: ALL_USERS_ID})
-                .populate({
-                    path: 'users',
-                    select: 'username'
-                })
-                .exec()
-            const allUsersUsernames = allUsersList.users.map((user) => user.username)
-
-            const potentialFriends = allUsersUsernames.filter((user) => !userFriendsUsernames.includes(user) && user !== username)
-
-            return res.status(200).json( potentialFriends )
+            return res.status(200).json(limitedPotentialFriends)
 
         } catch (e) {
             res.status(400).json({ message: e.message })

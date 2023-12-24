@@ -6,7 +6,6 @@ const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator')
 const jwt = require('jsonwebtoken')
 
-const ALL_USERS_ID = '657045f873b78fc8371a217e'
 const generateAccessToken = (id, role) => {
     const payload = {
         id,
@@ -29,20 +28,7 @@ class authController {
                 return res.status(400).json({ message: errors.array() })
             }
 
-            let user = await userModel.findOne({ username })
-            if (!user) {
-                return res.status(400).json({ message: "User with such username doesn't exist" })
-            }
-
-            const validPassword = bcrypt.compareSync(password, user.password)
-            if (!validPassword) {
-                return res.status(400).json({ message: "Wrong password" })
-            }
-
-            const accessToken = generateAccessToken(user._id, user.role, user.username)
-            await tokenModel.create({ user: user._id, accessToken: accessToken })
-
-            user = await userModel.findOne({ username })
+            const user = await userModel.findOne({ username })
                 .populate({
                     path: 'friends',
                     select: 'username'
@@ -50,13 +36,24 @@ class authController {
                 .populate('posts')
                 .exec()
 
+            if (!user) {
+                return res.status(400).json({ message: "User data is not correct" })
+            }
+
+            const validPassword = bcrypt.compareSync(password, user.password)
+            if (!validPassword) {
+                return res.status(400).json({ message: "User data is not correct" })
+            }
+
+            const accessToken = generateAccessToken(user._id, user.role, user.username)
+            await tokenModel.create({ user: user._id, accessToken: accessToken })
+
             return res.status(200).json({ token: accessToken, user })
 
         } catch (e) {
             res.status(400).json({ message: e.message })
         }
     }
-
     async logout(req, res) {
         try {
             const user = req.user.id
@@ -66,12 +63,11 @@ class authController {
                 return res.status(400).json({ message: 'Token Error' })
             }
 
-            return res.status(200).json({ message: 'User logged out' })
+            return res.status(200).json({ USER_LOGGED_OUT: 'SUCCESSFULLY' })
         } catch (e) {
             res.status(400).json({ message: e.message })
         }
     }
-
     async signup(req, res) {
         try {
             const { username, email, password } = req.body
@@ -96,9 +92,9 @@ class authController {
             const userRole = await roleModel.findOne({ value: 'USER' })
 
             const newUser = await userModel.create({ username, email, password: hashPassword, role: userRole.value })
-            await allUsersModel.updateOne({ _id: ALL_USERS_ID }, { $push: { users: newUser._id } })
+            await allUsersModel.findOneAndUpdate({}, { $push: { users: newUser._id } })
 
-            return res.status(200).json({ message: 'User successfully signed up'})
+            return res.status(200).json({ USER_SIGNED_UP: 'SUCCESSFULLY'})
 
         } catch (e) {
             res.status(400).json({ message: e.message })
