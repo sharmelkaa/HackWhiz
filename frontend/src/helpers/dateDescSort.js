@@ -1,5 +1,9 @@
 export const dateDescSort = (array) => {
-    if (!array) {
+    if (!array || array.constructor !== Array) {
+        throw new Error('Variable should be array')
+    }
+
+    if (array.length === 0) {
         return []
     }
 

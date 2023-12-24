@@ -15,6 +15,7 @@ export const fetchData = async (url, method, body={}) => {
 
         const response = await fetch(`${process.env.REACT_APP_API_URL}api/${url}`, reqOptions)
         return await response.json();
+
     } catch (error) {
         console.log(error);
     }

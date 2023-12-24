@@ -2,7 +2,7 @@ import {Form} from "../../../../components/UI/Form";
 import {FormHeader} from "../../../../components/UI/Form/components/FormHeader";
 import {FormFieldWrapper} from "../../../../components/UI/Form/components/FormFieldWrapper";
 import {FormField} from "../../../../components/UI/Form/components/FormField";
-import {emailValidation, passwordValidation, usernameValidation} from "../../helpers/validationRules";
+import {emailValidation, passwordValidation, usernameValidation} from "../../validation/validationRules";
 import {Error} from "../../../../components/UI/Error";
 import {PasswordVisibility} from "../../../../components/UI/Form/components/PasswordVisibility";
 import {Button} from "../../../../components/UI/Button";

@@ -13,7 +13,7 @@ import {NoStuff} from "../../../../styles/styles";
 export const OtherUserPublications = () => {
     const [modalMessage, setModalMessage] = useState('')
     const [publications, setPublications] = useState(null)
-    const sortedPublications = dateDescSort(publications)
+    const sortedPublications = publications === null ? null : dateDescSort(publications)
     const { username } = useParams()
     const { currentUser: { friends }, isAdmin } = useSelector((state) => state.user)
     const isMyFriend = useMemo(() => {
@@ -25,6 +25,9 @@ export const OtherUserPublications = () => {
     const onCloseModal = () => {
         setModalMessage('')
     }
+
+    console.log(publications)
+
     const onChangePublications = (newValue) => {
         setPublications(newValue)
     }
