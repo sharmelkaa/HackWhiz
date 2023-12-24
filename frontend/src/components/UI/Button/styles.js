@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-
 export const Button = styled.button`
   display: flex;
   justify-content: center;
@@ -10,9 +9,7 @@ export const Button = styled.button`
   border: none;
   border-radius: 10px;
   padding: 5px 15px;
-  font-family: 'Handjet', sans-serif;
   font-size: 24px;
-  color: aliceblue;
 
   &:disabled {
     cursor: not-allowed;
@@ -22,5 +19,4 @@ export const Button = styled.button`
   &:hover {
     background: orangered;
   }
-  
 `

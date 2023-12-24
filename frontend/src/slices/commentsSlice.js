@@ -1,7 +1,7 @@
 import {createSlice} from '@reduxjs/toolkit'
 
 const initialState = {
-    comments: null
+    comments: {}
 }
 
 export const commentsSlice = createSlice({
@@ -9,9 +9,6 @@ export const commentsSlice = createSlice({
     initialState,
     reducers: {
         updateComments: (state, action) => {
-            if (state.comments === null) {
-                state.comments = {}
-            }
             state.comments[action.payload.postID] = action.payload.commentsList
         }
     }

@@ -1,8 +1,6 @@
 const allUsersModel = require("../models/allUsersModel");
 const postModel = require("../models/postModel");
 const userModel = require("../models/userModel");
-
-const ALL_USERS_ID = '657045f873b78fc8371a217e'
 class adminController {
     async getUsersList(req, res) {
         try {
@@ -10,10 +8,12 @@ class adminController {
                 return res.status(400).json({ message: 'You don\'t have administrative rights' })
             }
 
-            const usersList = await allUsersModel.findById({ _id: ALL_USERS_ID})
+            const usersList = await allUsersModel.findOne()
                 .populate('users')
                 .exec()
-            return res.status(200).json( usersList.users )
+            const usernames = usersList.users.map((user) => user.username)
+
+            return res.status(200).json(usernames)
         } catch (e) {
             res.status(400).json({ message: e.message })
         }
@@ -34,7 +34,7 @@ class adminController {
             const username = req.body.username
             await userModel.findOneAndUpdate({ username }, { $pull: { posts: postID } }, { new: true })
 
-            return res.status(200).json({ message: 'Post was deleted successfully' })
+            return res.status(200).json({ POST_WAS_DELETED: 'SUCCESSFULLY' })
         } catch (e) {
             res.status(400).json({ message: e.message })
         }

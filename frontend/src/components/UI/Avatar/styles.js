@@ -1,5 +1,4 @@
 import styled from "styled-components";
-
 export const AvatarWrapper = styled.div`
   width: ${({ size }) => size ==='big' ? '30vw' : '35px'};
   height: ${({ size }) => size ==='big' ? '30vw' : '35px'};
