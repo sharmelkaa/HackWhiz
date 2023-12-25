@@ -1,5 +1,4 @@
 import * as SC from './styles'
-import delete_icon from './svg/delete.svg'
 import {useDispatch, useSelector} from "react-redux";
 import {useState} from "react";
 import {updateUser} from "../../../../slices/userSlice";

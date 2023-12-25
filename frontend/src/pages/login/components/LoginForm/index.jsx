@@ -14,13 +14,10 @@ import {PasswordVisibility} from "../../../../components/UI/Form/components/Pass
 
 const USERNAME = 'username'
 const PASSWORD = 'password'
-export const LoginForm = () => {
+export const LoginForm = ({ onSubmit }) => {
     const { register, handleSubmit, formState: { errors } } = useForm({ mode: "onChange" })
     const [showPassword, setShowPassword] = useState(false)
-    const dispatch = useDispatch()
-    const onSubmit = (userCredentials) => {
-        dispatch(loginUser(userCredentials))
-    }
+
     const onTogglePassword = () => {
         setShowPassword(prevState => !prevState)
     }
