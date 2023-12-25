@@ -6,6 +6,7 @@ export const FormField = ({ label, type, register, validation, children }) =>
         <SC.Input
             type={type}
             {...register(label, { ...validation })}
+            data-testid={label}
         />
         {children}
     </SC.FieldWrapper>

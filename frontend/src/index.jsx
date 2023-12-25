@@ -15,14 +15,14 @@ import { Provider } from 'react-redux'
 import {CheckAuth} from "./components/CheckAuth";
 import {NewPublication} from "./pages/new_publication";
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
     {
         path: "/",
         element: <Root/>,
         children: [
             {
                 index: true,
-                element: <WelcomePage/>
+                element: <WelcomePage />
             },
             {
                 path: '/:username',

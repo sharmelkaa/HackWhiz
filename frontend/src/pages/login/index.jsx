@@ -1,7 +1,7 @@
 import {Modal} from "../../components/UI/Modal";
 import {useDispatch, useSelector} from "react-redux";
 import {LoginForm} from "./components/LoginForm";
-import {resetError} from "../../slices/userSlice";
+import {loginUser, resetError} from "../../slices/userSlice";
 import {Loader} from "../../components/UI/Loader";
 import {Navigate} from "react-router";
 
@@ -12,12 +12,16 @@ export const LogIn = () => {
         dispatch(resetError())
     }
 
+    const onSubmit = (userCredentials) => {
+        dispatch(loginUser(userCredentials))
+    }
+
     return(
         <>
             {currentUser && <Navigate to={`/${currentUser.username}`} />}
             {error && <Modal text={error} onClose={onCloseModal} />}
             {isLoading && <Loader />}
-            {!currentUser && <LoginForm />}
+            {!currentUser && <LoginForm onSubmit={onSubmit}/>}
         </>
     )
 }
