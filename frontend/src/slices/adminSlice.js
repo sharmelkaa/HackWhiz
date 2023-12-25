@@ -1,15 +1,15 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {fetchData} from "../api/fetchData";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { fetchData } from '../api/fetchData'
 
 const initialState = {
     allUsers: null,
     isLoading: false,
-    error: null
+    error: null,
 }
 
 export const fetchAllUsers = createAsyncThunk(
     'admin/fetchAllUsers',
-    async(arg, { rejectWithValue }) => {
+    async (arg, { rejectWithValue }) => {
         try {
             const response = await fetchData('users_list', 'GET')
             if (response.hasOwnProperty('message')) {
@@ -17,7 +17,7 @@ export const fetchAllUsers = createAsyncThunk(
             }
 
             return response
-        } catch(error) {
+        } catch (error) {
             return rejectWithValue(error.message)
         }
     }
@@ -29,7 +29,7 @@ export const adminSlice = createSlice({
     reducers: {
         resetError: (state) => {
             state.error = null
-        }
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -48,7 +48,7 @@ export const adminSlice = createSlice({
                 state.error = null
                 state.allUsers = null
             })
-    }
+    },
 })
 
 export const { resetError } = adminSlice.actions

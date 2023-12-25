@@ -1,7 +1,7 @@
-import {useSelector} from "react-redux";
-import {useParams} from "react-router";
-import {OtherUserPublications} from "./components/OtherUserPublications";
-import {MyPublications} from "./components/MyPublications";
+import { useSelector } from 'react-redux'
+import { useParams } from 'react-router'
+import { OtherUserPublications } from './components/OtherUserPublications'
+import { MyPublications } from './components/MyPublications'
 export const Publications = () => {
     const { currentUser } = useSelector((state) => state.user)
     const { username } = useParams()
@@ -12,5 +12,3 @@ export const Publications = () => {
 
     return <OtherUserPublications />
 }
-
-

@@ -1,6 +1,7 @@
-import styled from "styled-components";
+import styled from 'styled-components'
+
 export const FormFieldWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 `

@@ -8,5 +8,7 @@ export const dateDescSort = (array) => {
     }
 
     const arrayCopy = [...array]
-    return arrayCopy.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+    return arrayCopy.sort(
+        (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+    )
 }

@@ -1,9 +1,9 @@
-import * as SC from './styles'
+import {useParams} from "react-router";
 import {useDispatch, useSelector} from "react-redux";
 import {useState} from "react";
+import * as SC from './styles'
 import {updateUser} from "../../../../slices/userSlice";
 import {Modal} from "../../../../components/UI/Modal";
-import {useParams} from "react-router";
 import {fetchData} from "../../../../api/fetchData";
 import {EditPublicationForm} from "./components/EditPublicationForm";
 import {WarningModal} from "../../../../components/UI/WarningModal";

@@ -1,27 +1,30 @@
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import * as SC from './styles'
-import {useEffect, useState} from "react";
-import {Modal} from "../../../../../../components/UI/Modal";
-import {useDispatch, useSelector} from "react-redux";
-import {Comment} from "./components/Comment";
-import {AddCommentForm} from "./components/AddCommentForm";
-import {updateComments} from "../../../../../../slices/commentsSlice";
-import {isObjectEmpty} from "../../../../../../helpers/isObjectEmpty";
-import {fetchData} from "../../../../../../api/fetchData";
-import {NoStuff} from "../../../../../../styles/styles";
+import { Modal } from '../../../../../../components/UI/Modal'
+import { Comment } from './components/Comment'
+import { AddCommentForm } from './components/AddCommentForm'
+import { updateComments } from '../../../../../../slices/commentsSlice'
+import { isObjectEmpty } from '../../../../../../helpers/isObjectEmpty'
+import { fetchData } from '../../../../../../api/fetchData'
+import { NoStuff } from '../../../../../../styles/styles'
 
-export const Comments = ({ post }) => {
+export function Comments({ post }) {
     const [modalMessage, setModalMessage] = useState(null)
     const { comments } = useSelector((state) => state.comments)
     const { isAdmin } = useSelector((state) => state.user)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        const getComments = async() => {
+        const getComments = async () => {
             if (comments.hasOwnProperty(post)) {
                 return
             }
 
-            const response = await fetchData(`/get_comments?postID=${post}`, 'GET')
+            const response = await fetchData(
+                `/get_comments?postID=${post}`,
+                'GET'
+            )
             if (response.hasOwnProperty('message')) {
                 setModalMessage(response.message)
                 return
@@ -29,13 +32,13 @@ export const Comments = ({ post }) => {
 
             const payload = {
                 postID: post,
-                commentsList: response
+                commentsList: response,
             }
             dispatch(updateComments(payload))
         }
 
         getComments()
-    }, []);
+    }, [])
     const onCloseModal = () => {
         setModalMessage(null)
     }
@@ -43,26 +46,29 @@ export const Comments = ({ post }) => {
         setModalMessage(message)
     }
 
-    return(
+    return (
         <>
-            {modalMessage && <Modal text={modalMessage} onClose={onCloseModal} /> }
-            {(!isObjectEmpty(comments) && comments[post]) &&
+            {modalMessage && (
+                <Modal text={modalMessage} onClose={onCloseModal} />
+            )}
+            {!isObjectEmpty(comments) && comments[post] && (
                 <SC.Main>
-                    {comments[post].length === 0 && <NoStuff>No comments yet...</NoStuff>}
-                    {comments[post].length !== 0 && comments[post].map((comment) =>
-                        <Comment
-                            comment={comment}
-                            key={comment._id}
-                            post={post}
-                        />)
-                    }
-                    {!isAdmin &&
-                        <AddCommentForm
-                            onOpenModal={onOpenModal}
-                            post={post}
-                        />}
+                    {comments[post].length === 0 && (
+                        <NoStuff>No comments yet...</NoStuff>
+                    )}
+                    {comments[post].length !== 0 &&
+                        comments[post].map((comment) => (
+                            <Comment
+                                comment={comment}
+                                key={comment._id}
+                                post={post}
+                            />
+                        ))}
+                    {!isAdmin && (
+                        <AddCommentForm onOpenModal={onOpenModal} post={post} />
+                    )}
                 </SC.Main>
-            }
+            )}
         </>
     )
 }

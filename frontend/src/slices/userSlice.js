@@ -1,6 +1,10 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {getJWT, removeLocalStorage, setLocalStorage} from "../helpers/manageLocalStorage";
-import {fetchData} from "../api/fetchData";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import {
+    getJWT,
+    removeLocalStorage,
+    setLocalStorage,
+} from '../helpers/manageLocalStorage'
+import { fetchData } from '../api/fetchData'
 
 const JWT = getJWT()
 const isLogged = JWT !== null
@@ -15,7 +19,7 @@ const initialState = {
 if (isLogged) {
     const response = await fetchData('personal_data', 'GET')
     if (response.hasOwnProperty('message')) {
-       initialState.error = response.message
+        initialState.error = response.message
     } else {
         initialState.currentUser = response
         initialState.isAdmin = response.username === 'admin'
@@ -24,7 +28,7 @@ if (isLogged) {
 
 export const loginUser = createAsyncThunk(
     'user/loginUser',
-    async(data, { rejectWithValue }) => {
+    async (data, { rejectWithValue }) => {
         try {
             const response = await fetchData('login', 'POST', data)
             if (response.hasOwnProperty('message')) {
@@ -32,14 +36,14 @@ export const loginUser = createAsyncThunk(
             }
             setLocalStorage('JWT', response.token)
             return response.user
-        } catch(error) {
+        } catch (error) {
             return rejectWithValue(error.message)
         }
     }
 )
 export const logoutUser = createAsyncThunk(
     'user/logoutUser',
-    async(arg, { rejectWithValue }) => {
+    async (arg, { rejectWithValue }) => {
         try {
             const response = await fetchData('logout', 'POST')
             if (response.hasOwnProperty('message')) {
@@ -47,7 +51,7 @@ export const logoutUser = createAsyncThunk(
             }
             removeLocalStorage('JWT')
             return response
-        } catch(error) {
+        } catch (error) {
             return rejectWithValue(error.message)
         }
     }
@@ -62,7 +66,7 @@ export const userSlice = createSlice({
         },
         resetError: (state) => {
             state.error = null
-        }
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -94,7 +98,7 @@ export const userSlice = createSlice({
             .addCase(loginUser.pending, (state) => {
                 state.isLoading = true
             })
-    }
+    },
 })
 
 export const { updateUser, resetError } = userSlice.actions

@@ -26,7 +26,6 @@ export const OtherUserPublications = () => {
         setModalMessage('')
     }
 
-    console.log(publications)
 
     const onChangePublications = (newValue) => {
         setPublications(newValue)
