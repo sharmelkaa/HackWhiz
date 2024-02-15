@@ -9,11 +9,17 @@ const COMMENT = 'comment'
 export const commentValidation = {
     required: "Comment can't be empty",
     maxLength: {
-        value: 8000,
-        message: 'Comment can contain a maximum of 8000 characters',
+        value: 3000,
+        message: 'Comment can contain a maximum of 3000 characters',
     },
-    validate: (value) =>
-        /^(?!\s*$).*$/.test(value) || "Comment can't just consist of spaces",
+    validate: {
+        notOnlySpaces: (value) =>
+            /^(?!\s*$).*$/.test(value) ||
+            "Comment can't just consist of spaces",
+        noSpacesAround: (value) =>
+            /^\S(.*\S)?$/.test(value) ||
+            'Comment can"t start or end with spaces',
+    },
 }
 
 export function AddCommentForm({ onOpenModal, post }) {
@@ -52,7 +58,7 @@ export function AddCommentForm({ onOpenModal, post }) {
                 <SC.CommentInput
                     type="text"
                     placeholder="Сomment..."
-                    {...register(COMMENT, { ...commentValidation })}
+                    {...register(COMMENT, commentValidation)}
                 />
                 <SC.Button>
                     <SC.Send src={send} />
