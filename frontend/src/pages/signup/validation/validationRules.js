@@ -4,10 +4,16 @@ export const usernameValidation = {
         value: 4,
         message: 'Username must be at least 4 characters long',
     },
+    maxLength: {
+        value: 25,
+        message: 'Username can contain a maximum of 25 characters',
+    },
     pattern: {
-        value: /^(?!admin\s*$).+/,
+        value: /^(?![aA][dD][mM][iI][nN]\s*$).+/,
         message: 'You can"t use "admin" as username',
     },
+    validate: (value) =>
+        /^(?!\s*$).*$/.test(value) || "Username can't just consist of spaces",
 }
 
 export const emailValidation = {
@@ -15,6 +21,13 @@ export const emailValidation = {
     pattern: {
         value: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
         message: 'Enter a valid email',
+    },
+    validate: (value) => {
+        for (const symbol of value) {
+            if (/[а-яА-Я]/.test(symbol)) {
+                return "Email can't contain Cyrillic characters"
+            }
+        }
     },
 }
 
