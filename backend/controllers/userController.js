@@ -2,7 +2,6 @@ const userModel = require("../models/userModel");
 const fs = require('fs')
 const path = require('path')
 const MAIN_PATH = require('../main_path')
-const allUsersModel = require("../models/allUsersModel");
 
 class userController {
     async getUserData(req, res) {
