@@ -1,13 +1,12 @@
-import {Modal} from "../../../../../../../../components/UI/Modal";
-import {useState} from "react";
-import {useDispatch} from "react-redux";
-import {updateComments} from "../../../../../../../../slices/commentsSlice";
-import {fetchData} from "../../../../../../../../api/fetchData";
-import {WarningModal} from "../../../../../../../../components/UI/WarningModal";
-import {CommentContent} from "./components/CommentContent";
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { Modal } from '../../../../../../../../components/UI/Modal'
+import { updateComments } from '../../../../../../../../slices/commentsSlice'
+import { fetchData } from '../../../../../../../../api/fetchData'
+import { WarningModal } from '../../../../../../../../components/UI/WarningModal'
+import { CommentContent } from './components/CommentContent'
 
-
-export const Comment = ({ comment, post }) => {
+export function Comment({ comment, post }) {
     const [modalMessage, setModalMessage] = useState(null)
     const [warningModal, setWarningModal] = useState(null)
     const dispatch = useDispatch()
@@ -20,8 +19,11 @@ export const Comment = ({ comment, post }) => {
     const onCloseModal = () => {
         setModalMessage(null)
     }
-    const deleteComment = async() => {
-        const response = await fetchData('delete_comment', 'DELETE', {postID: post, commentID: comment._id})
+    const deleteComment = async () => {
+        const response = await fetchData('delete_comment', 'DELETE', {
+            postID: post,
+            commentID: comment._id,
+        })
         if (response.hasOwnProperty('message')) {
             setModalMessage(response.message)
             return
@@ -29,22 +31,23 @@ export const Comment = ({ comment, post }) => {
 
         const payload = {
             postID: post,
-            commentsList: response
+            commentsList: response,
         }
         dispatch(updateComments(payload))
     }
 
-
-    return(
+    return (
         <>
-            {modalMessage && <Modal text={modalMessage} onClose={onCloseModal} /> }
-            {warningModal &&
+            {modalMessage && (
+                <Modal text={modalMessage} onClose={onCloseModal} />
+            )}
+            {warningModal && (
                 <WarningModal
                     text={warningModal}
                     onClose={onCloseWarningModal}
                     onYes={deleteComment}
                 />
-            }
+            )}
             <CommentContent
                 comment={comment}
                 post={post}

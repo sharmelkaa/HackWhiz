@@ -35,6 +35,10 @@ export const FriendsLink = styled(NavLink)`
     display: flex;
     justify-content: center;
     align-items: center;
+    word-break: break-all;
+    max-width: 500px;
+    align-self: center;
+    width: 100%;
 
     &:hover {
         text-shadow:

@@ -1,8 +1,20 @@
 import styled from 'styled-components'
 import { Input } from '../../../../../../../../components/UI/Form/components/FormField/styles'
 
-export const CommentInput = styled(Input)`
+// export const CommentInput = styled(Input)`
+//     width: 100%;
+// `
+
+export const CommentInput = styled.textarea`
     width: 100%;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid aliceblue;
+    font-size: 24px;
+    padding: 5px 15px;
+    border-radius: 10px;
+    background-color: rgba(0, 136, 255, 0.2);
+    resize: none;
 `
 export const EditForm = styled.form`
     margin-top: 5px;

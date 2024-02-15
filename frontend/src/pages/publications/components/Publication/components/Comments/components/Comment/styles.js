@@ -1,12 +1,5 @@
 import styled from 'styled-components'
 
-export const Options = styled.div`
-    display: flex;
-    gap: 25px;
-    justify-content: center;
-    font-size: 24px;
-    font-style: italic;
-`
 export const No = styled.div`
     color: black;
     cursor: pointer;
@@ -37,16 +30,12 @@ export const Content = styled.div`
 export const Text = styled.div`
     display: flex;
     flex-direction: column;
+    max-width: 870px;
+    width: 100%;
 `
 export const Author = styled.div`
     font-style: italic;
 `
-export const Comment = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-`
-
 export const FirstRow = styled.div`
     display: flex;
     gap: 10px;
@@ -77,4 +66,9 @@ export const Manage = styled.div`
     display: flex;
     gap: 5px;
     font-style: italic;
+`
+
+export const Comment = styled.div`
+    word-break: break-word;
+    overflow: scroll;
 `
