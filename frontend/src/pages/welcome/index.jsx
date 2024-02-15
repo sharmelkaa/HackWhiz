@@ -1,6 +1,6 @@
 import * as SC from './styles'
-import {useSelector} from "react-redux";
-import {Navigate} from "react-router";
+import { useSelector } from 'react-redux'
+import { Navigate } from 'react-router'
 export const WelcomePage = () => {
     const { currentUser, error } = useSelector((state) => state.user)
 
@@ -12,7 +12,7 @@ export const WelcomePage = () => {
         return
     }
 
-    return(
+    return (
         <SC.WelcomeContainer>
             <SC.TagLogo>{'</>'}</SC.TagLogo>
             <SC.TextContainer>
@@ -22,4 +22,3 @@ export const WelcomePage = () => {
         </SC.WelcomeContainer>
     )
 }
-

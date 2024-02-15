@@ -85,20 +85,28 @@ class userController {
 
     async addFriend(req, res) {
         try {
-            const _id = req.user.id
+            const myID = req.user.id
             const friend_name = req.body.username
 
-            const friendID = await userModel.findOne({ username: friend_name }, _id)
+            const friendID = await userModel.findOne({ username: friend_name }, '_id')
+            console.log(friendID)
             if (!friendID) {
                 return res.status(400).json({ message: 'Such user doesn\'t exists' })
             }
 
-            const alreadyFriend = await userModel.findOne({ friends : { "$in": [friendID] } })
-            if (alreadyFriend !== null) {
-                return res.status(400).json({ message: 'Such user is in friends list already' })
+            const myFriends = await userModel.findOne({ _id: myID }, 'friends')
+                .populate({
+                    path: 'friends',
+                    select: 'username'
+                })
+
+            const alreadyFriend = myFriends.friends.map((user) => user.username).includes(friend_name)
+
+            if (alreadyFriend) {
+                return res.status(400).json({ message: `Such user is in friends list already` })
             }
 
-            const user = await userModel.findByIdAndUpdate({ _id }, { $push: { friends: friendID } }, { new: true })
+            const user = await userModel.findByIdAndUpdate({ _id: myID }, { $push: { friends: friendID } }, { new: true })
                 .populate({
                     path: 'friends',
                     select: 'username'
@@ -106,7 +114,7 @@ class userController {
                 .populate('posts')
                 .exec()
 
-            await userModel.findByIdAndUpdate({ _id: friendID._id }, { $push: { friends: _id } }, { new: true })
+            await userModel.findByIdAndUpdate({ _id: friendID._id }, { $push: { friends: myID } }, { new: true })
 
             return res.status(200).json(user)
 
