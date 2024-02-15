@@ -24,15 +24,15 @@ class publicationController {
             }
 
             const isFriend = req.query.isFriend
-            const populate = isFriend ? 'posts' : { path: 'posts', match: { friendsOnly: false } }
+            const populate = isFriend === 'true' ? 'posts' : { path: 'posts', match: { friendsOnly: false } }
 
             const posts = await userModel.findOne({ username }, 'posts')
                 .populate(populate)
                 .exec()
-
+            console.log(posts)
             return res.status(200).json(posts)
         } catch (e) {
-            res.status(400).json({ message: e.message })
+            res.status(400).json({ message: 'e.message' })
         }
     }
 
@@ -44,7 +44,7 @@ class publicationController {
         }
 
         const isFriend = req.query.isFriend
-        const populate = isFriend ? 'posts' : { path: 'posts', match: { friendsOnly: false } }
+        const populate = isFriend === 'true' ? 'posts' : { path: 'posts', match: { friendsOnly: false } }
 
         const posts = await userModel.findOne({ username }, 'posts')
             .populate(populate)
