@@ -12,8 +12,13 @@ export const usernameValidation = {
         value: /^(?![aA][dD][mM][iI][nN]\s*$).+/,
         message: 'You can"t use "admin" as username',
     },
-    validate: (value) =>
-        /^(?!\s*$).*$/.test(value) || "Username can't just consist of spaces",
+    validate: {
+        notOnlySpaces: (value) =>
+            /^(?!\s*$).*$/.test(value) ||
+            "Username can't just consist of spaces",
+        noSpacesAround: (value) =>
+            /^\S[^\s.]+\S$/.test(value) || 'Username can"t contain spaces',
+    },
 }
 
 export const emailValidation = {
@@ -38,4 +43,6 @@ export const passwordValidation = {
         message:
             'Password must consist of 6-20 characters containing at least one digit, one upper and one lowercase letter',
     },
+    validate: (value) =>
+        /^\S[^\s.]+\S$/.test(value) || 'Password can"t contain spaces',
 }

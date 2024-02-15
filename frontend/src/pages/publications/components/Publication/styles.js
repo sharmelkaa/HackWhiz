@@ -14,6 +14,10 @@ export const Wrapper = styled.div`
     flex-direction: column;
     gap: 10px;
     flex-grow: 1;
+    max-width: 1024px;
+    width: 100%;
+    word-break: break-word;
+    overflow: scroll;
 `
 export const FirstRow = styled.div`
     display: flex;

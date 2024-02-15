@@ -59,7 +59,7 @@ export function EditCommentForm({ commentID, comment, postID, closeEditForm }) {
                     <SC.CommentInput
                         rows={5}
                         placeholder="Сomment..."
-                        {...register(COMMENT, { ...commentValidation })}
+                        {...register(COMMENT, commentValidation)}
                     />
                     <SC.Button>
                         <SC.SVG src={save} />
